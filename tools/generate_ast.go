@@ -112,6 +112,12 @@ func defineType(w *bufio.Writer, typeName, fieldList string) error {
 		lines = append(lines, field)
 	}
 	lines = append(lines, "}", "")
+	// implements Expr
+	lines = append(lines,
+		fmt.Sprintf("// %s implements Expr", typeName),
+		fmt.Sprintf("var _ Expr = &%s{}", typeName),
+		"",
+	)
 	// visitor pattern
 	lines = append(lines,
 		fmt.Sprintf("func (expr *%s) accept(v Visitor) interface{} {", typeName),

@@ -18,6 +18,9 @@ type Binary struct {
 	right    Expr
 }
 
+// Binary implements Expr
+var _ Expr = &Binary{}
+
 func (expr *Binary) accept(v Visitor) interface{} {
 	return v.visitBinary(expr)
 }
@@ -34,6 +37,9 @@ type Grouping struct {
 	expression Expr
 }
 
+// Grouping implements Expr
+var _ Expr = &Grouping{}
+
 func (expr *Grouping) accept(v Visitor) interface{} {
 	return v.visitGrouping(expr)
 }
@@ -47,6 +53,9 @@ func NewGrouping(expression Expr) *Grouping {
 type Literal struct {
 	value interface{}
 }
+
+// Literal implements Expr
+var _ Expr = &Literal{}
 
 func (expr *Literal) accept(v Visitor) interface{} {
 	return v.visitLiteral(expr)
@@ -62,6 +71,9 @@ type Unary struct {
 	operator Token
 	right    Expr
 }
+
+// Unary implements Expr
+var _ Expr = &Unary{}
 
 func (expr *Unary) accept(v Visitor) interface{} {
 	return v.visitUnary(expr)
