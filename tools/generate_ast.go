@@ -29,6 +29,16 @@ func main() {
 	}
 }
 
+func writeLines(w *bufio.Writer, lines []string) error {
+	for _, line := range lines {
+		_, err := fmt.Fprintln(w, line)
+		if err != nil {
+			return fmt.Errorf("write line: %v", err)
+		}
+	}
+	return w.Flush()
+}
+
 func defineAST(outDir, baseName string, types []string) error {
 	path := path.Join(outDir, baseName+".go")
 	f, err := os.Create(path)
@@ -71,16 +81,6 @@ func defineAST(outDir, baseName string, types []string) error {
 		return fmt.Errorf("write code to file %v: %v", f, err)
 	}
 	return nil
-}
-
-func writeLines(w *bufio.Writer, lines []string) error {
-	for _, line := range lines {
-		_, err := fmt.Fprintln(w, line)
-		if err != nil {
-			return fmt.Errorf("write line: %v", err)
-		}
-	}
-	return w.Flush()
 }
 
 func defineType(w *bufio.Writer, typeName, fieldList string) error {
