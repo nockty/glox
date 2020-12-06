@@ -54,12 +54,17 @@ func defineAST(outDir, baseName string, types []string) error {
 		"package glox",
 		"",
 		"type Expr interface {",
+		"accept(v Visitor) interface{}",
 		"}",
 		"",
 	}
 	err = writeLines(w, lines)
 	if err != nil {
 		return err
+	}
+	err = defineVisitor(w, types)
+	if err != nil {
+		return fmt.Errorf("define visitor: %v", err)
 	}
 	// types
 	for _, exprType := range types {
@@ -83,6 +88,16 @@ func defineAST(outDir, baseName string, types []string) error {
 	return nil
 }
 
+func defineVisitor(w *bufio.Writer, types []string) error {
+	lines := []string{"type Visitor interface {"}
+	for _, exprType := range types {
+		typeName := strings.TrimSpace(strings.Split(exprType, ":")[0])
+		lines = append(lines, fmt.Sprintf("visit%s(*%s) interface{}", typeName, typeName))
+	}
+	lines = append(lines, "}", "")
+	return writeLines(w, lines)
+}
+
 func defineType(w *bufio.Writer, typeName, fieldList string) error {
 	fieldsUntrimmed := strings.Split(fieldList, ",")
 	fields := []string{}
@@ -97,6 +112,13 @@ func defineType(w *bufio.Writer, typeName, fieldList string) error {
 		lines = append(lines, field)
 	}
 	lines = append(lines, "}", "")
+	// visitor pattern
+	lines = append(lines,
+		fmt.Sprintf("func (expr *%s) accept(v Visitor) interface{} {", typeName),
+		fmt.Sprintf("return v.visit%s(expr)", typeName),
+		"}",
+		"",
+	)
 	// constructor
 	lines = append(lines,
 		fmt.Sprintf("func New%s(%s) *%s {", typeName, fieldList, typeName),
