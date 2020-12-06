@@ -34,7 +34,7 @@ func main() {
 		"Literal  : value interface{}",
 		"Unary    : operator Token, right Expr",
 	}
-	err := defineAST(outDir, "expressions", types)
+	err := defineAST(outDir, "Expr", types)
 	if err != nil {
 		println(fmt.Errorf("failed to generate AST: %v", err).Error())
 	}
@@ -51,7 +51,7 @@ func writeLines(w *bufio.Writer, lines []string) error {
 }
 
 func defineAST(outDir, baseName string, types []string) error {
-	path := path.Join(outDir, baseName+".go")
+	path := path.Join(outDir, strings.ToLower(baseName)+".go")
 	f, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("create %v: %v", path, err)
@@ -73,7 +73,7 @@ func defineAST(outDir, baseName string, types []string) error {
 	if err != nil {
 		return fmt.Errorf("define Expr: %v", err)
 	}
-	err = defineVisitor(w, types)
+	err = defineVisitor(w, baseName, types)
 	if err != nil {
 		return fmt.Errorf("define visitor: %v", err)
 	}
@@ -82,7 +82,7 @@ func defineAST(outDir, baseName string, types []string) error {
 		components := strings.Split(exprType, ":")
 		typeName := strings.TrimSpace(components[0])
 		fields := strings.TrimSpace(components[1])
-		err := defineType(w, typeName, fields)
+		err := defineType(w, baseName, typeName, fields)
 		if err != nil {
 			return fmt.Errorf("define type %v: %v", typeName, err)
 		}
@@ -110,11 +110,12 @@ func defineExpr(w *bufio.Writer) error {
 	return writeLines(w, lines)
 }
 
-func defineVisitor(w *bufio.Writer, types []string) error {
+func defineVisitor(w *bufio.Writer, baseName string, types []string) error {
 	lines := []string{"type visitor interface {"}
 	for _, exprType := range types {
 		typeName := strings.TrimSpace(strings.Split(exprType, ":")[0])
-		lines = append(lines, fmt.Sprintf("visit%s(*%s) interface{}", typeName, typeName))
+		lines = append(lines, fmt.Sprintf(
+			"visit%s(*%s) interface{}", typeName+baseName, typeName))
 	}
 	lines = append(lines, "}", "")
 	// visitor by go type
@@ -122,14 +123,15 @@ func defineVisitor(w *bufio.Writer, types []string) error {
 		lines = append(lines, fmt.Sprintf("type visitor%s interface {", strings.Title(goType)))
 		for _, exprType := range types {
 			typeName := strings.TrimSpace(strings.Split(exprType, ":")[0])
-			lines = append(lines, fmt.Sprintf("visit%s(*%s) %s", typeName, typeName, goType))
+			lines = append(lines, fmt.Sprintf(
+				"visit%s(*%s) %s", typeName+baseName, typeName, goType))
 		}
 		lines = append(lines, "}", "")
 	}
 	return writeLines(w, lines)
 }
 
-func defineType(w *bufio.Writer, typeName, fieldList string) error {
+func defineType(w *bufio.Writer, baseName, typeName, fieldList string) error {
 	fieldsUntrimmed := strings.Split(fieldList, ",")
 	fields := []string{}
 	for _, field := range fieldsUntrimmed {
@@ -162,7 +164,7 @@ func defineType(w *bufio.Writer, typeName, fieldList string) error {
 	// visitor pattern
 	lines = append(lines,
 		fmt.Sprintf("func (expr *%s) Accept(v visitor) interface{} {", typeName),
-		fmt.Sprintf("return v.visit%s(expr)", typeName),
+		fmt.Sprintf("return v.visit%s(expr)", typeName+baseName),
 		"}",
 		"",
 	)
@@ -171,7 +173,7 @@ func defineType(w *bufio.Writer, typeName, fieldList string) error {
 		lines = append(lines,
 			fmt.Sprintf("func (expr *%s) Accept%s(v visitor%s) %s {",
 				typeName, strings.Title(goType), strings.Title(goType), goType),
-			fmt.Sprintf("return v.visit%s(expr)", typeName),
+			fmt.Sprintf("return v.visit%s(expr)", typeName+baseName),
 			"}",
 			"",
 		)

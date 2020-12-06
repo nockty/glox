@@ -25,143 +25,143 @@ type Expr interface {
 }
 
 type visitor interface {
-	visitBinary(*Binary) interface{}
-	visitGrouping(*Grouping) interface{}
-	visitLiteral(*Literal) interface{}
-	visitUnary(*Unary) interface{}
+	visitBinaryExpr(*Binary) interface{}
+	visitGroupingExpr(*Grouping) interface{}
+	visitLiteralExpr(*Literal) interface{}
+	visitUnaryExpr(*Unary) interface{}
 }
 
 type visitorBool interface {
-	visitBinary(*Binary) bool
-	visitGrouping(*Grouping) bool
-	visitLiteral(*Literal) bool
-	visitUnary(*Unary) bool
+	visitBinaryExpr(*Binary) bool
+	visitGroupingExpr(*Grouping) bool
+	visitLiteralExpr(*Literal) bool
+	visitUnaryExpr(*Unary) bool
 }
 
 type visitorString interface {
-	visitBinary(*Binary) string
-	visitGrouping(*Grouping) string
-	visitLiteral(*Literal) string
-	visitUnary(*Unary) string
+	visitBinaryExpr(*Binary) string
+	visitGroupingExpr(*Grouping) string
+	visitLiteralExpr(*Literal) string
+	visitUnaryExpr(*Unary) string
 }
 
 type visitorInt interface {
-	visitBinary(*Binary) int
-	visitGrouping(*Grouping) int
-	visitLiteral(*Literal) int
-	visitUnary(*Unary) int
+	visitBinaryExpr(*Binary) int
+	visitGroupingExpr(*Grouping) int
+	visitLiteralExpr(*Literal) int
+	visitUnaryExpr(*Unary) int
 }
 
 type visitorInt8 interface {
-	visitBinary(*Binary) int8
-	visitGrouping(*Grouping) int8
-	visitLiteral(*Literal) int8
-	visitUnary(*Unary) int8
+	visitBinaryExpr(*Binary) int8
+	visitGroupingExpr(*Grouping) int8
+	visitLiteralExpr(*Literal) int8
+	visitUnaryExpr(*Unary) int8
 }
 
 type visitorInt16 interface {
-	visitBinary(*Binary) int16
-	visitGrouping(*Grouping) int16
-	visitLiteral(*Literal) int16
-	visitUnary(*Unary) int16
+	visitBinaryExpr(*Binary) int16
+	visitGroupingExpr(*Grouping) int16
+	visitLiteralExpr(*Literal) int16
+	visitUnaryExpr(*Unary) int16
 }
 
 type visitorInt32 interface {
-	visitBinary(*Binary) int32
-	visitGrouping(*Grouping) int32
-	visitLiteral(*Literal) int32
-	visitUnary(*Unary) int32
+	visitBinaryExpr(*Binary) int32
+	visitGroupingExpr(*Grouping) int32
+	visitLiteralExpr(*Literal) int32
+	visitUnaryExpr(*Unary) int32
 }
 
 type visitorInt64 interface {
-	visitBinary(*Binary) int64
-	visitGrouping(*Grouping) int64
-	visitLiteral(*Literal) int64
-	visitUnary(*Unary) int64
+	visitBinaryExpr(*Binary) int64
+	visitGroupingExpr(*Grouping) int64
+	visitLiteralExpr(*Literal) int64
+	visitUnaryExpr(*Unary) int64
 }
 
 type visitorUint interface {
-	visitBinary(*Binary) uint
-	visitGrouping(*Grouping) uint
-	visitLiteral(*Literal) uint
-	visitUnary(*Unary) uint
+	visitBinaryExpr(*Binary) uint
+	visitGroupingExpr(*Grouping) uint
+	visitLiteralExpr(*Literal) uint
+	visitUnaryExpr(*Unary) uint
 }
 
 type visitorUint8 interface {
-	visitBinary(*Binary) uint8
-	visitGrouping(*Grouping) uint8
-	visitLiteral(*Literal) uint8
-	visitUnary(*Unary) uint8
+	visitBinaryExpr(*Binary) uint8
+	visitGroupingExpr(*Grouping) uint8
+	visitLiteralExpr(*Literal) uint8
+	visitUnaryExpr(*Unary) uint8
 }
 
 type visitorUint16 interface {
-	visitBinary(*Binary) uint16
-	visitGrouping(*Grouping) uint16
-	visitLiteral(*Literal) uint16
-	visitUnary(*Unary) uint16
+	visitBinaryExpr(*Binary) uint16
+	visitGroupingExpr(*Grouping) uint16
+	visitLiteralExpr(*Literal) uint16
+	visitUnaryExpr(*Unary) uint16
 }
 
 type visitorUint32 interface {
-	visitBinary(*Binary) uint32
-	visitGrouping(*Grouping) uint32
-	visitLiteral(*Literal) uint32
-	visitUnary(*Unary) uint32
+	visitBinaryExpr(*Binary) uint32
+	visitGroupingExpr(*Grouping) uint32
+	visitLiteralExpr(*Literal) uint32
+	visitUnaryExpr(*Unary) uint32
 }
 
 type visitorUint64 interface {
-	visitBinary(*Binary) uint64
-	visitGrouping(*Grouping) uint64
-	visitLiteral(*Literal) uint64
-	visitUnary(*Unary) uint64
+	visitBinaryExpr(*Binary) uint64
+	visitGroupingExpr(*Grouping) uint64
+	visitLiteralExpr(*Literal) uint64
+	visitUnaryExpr(*Unary) uint64
 }
 
 type visitorUintptr interface {
-	visitBinary(*Binary) uintptr
-	visitGrouping(*Grouping) uintptr
-	visitLiteral(*Literal) uintptr
-	visitUnary(*Unary) uintptr
+	visitBinaryExpr(*Binary) uintptr
+	visitGroupingExpr(*Grouping) uintptr
+	visitLiteralExpr(*Literal) uintptr
+	visitUnaryExpr(*Unary) uintptr
 }
 
 type visitorByte interface {
-	visitBinary(*Binary) byte
-	visitGrouping(*Grouping) byte
-	visitLiteral(*Literal) byte
-	visitUnary(*Unary) byte
+	visitBinaryExpr(*Binary) byte
+	visitGroupingExpr(*Grouping) byte
+	visitLiteralExpr(*Literal) byte
+	visitUnaryExpr(*Unary) byte
 }
 
 type visitorRune interface {
-	visitBinary(*Binary) rune
-	visitGrouping(*Grouping) rune
-	visitLiteral(*Literal) rune
-	visitUnary(*Unary) rune
+	visitBinaryExpr(*Binary) rune
+	visitGroupingExpr(*Grouping) rune
+	visitLiteralExpr(*Literal) rune
+	visitUnaryExpr(*Unary) rune
 }
 
 type visitorFloat32 interface {
-	visitBinary(*Binary) float32
-	visitGrouping(*Grouping) float32
-	visitLiteral(*Literal) float32
-	visitUnary(*Unary) float32
+	visitBinaryExpr(*Binary) float32
+	visitGroupingExpr(*Grouping) float32
+	visitLiteralExpr(*Literal) float32
+	visitUnaryExpr(*Unary) float32
 }
 
 type visitorFloat64 interface {
-	visitBinary(*Binary) float64
-	visitGrouping(*Grouping) float64
-	visitLiteral(*Literal) float64
-	visitUnary(*Unary) float64
+	visitBinaryExpr(*Binary) float64
+	visitGroupingExpr(*Grouping) float64
+	visitLiteralExpr(*Literal) float64
+	visitUnaryExpr(*Unary) float64
 }
 
 type visitorComplex64 interface {
-	visitBinary(*Binary) complex64
-	visitGrouping(*Grouping) complex64
-	visitLiteral(*Literal) complex64
-	visitUnary(*Unary) complex64
+	visitBinaryExpr(*Binary) complex64
+	visitGroupingExpr(*Grouping) complex64
+	visitLiteralExpr(*Literal) complex64
+	visitUnaryExpr(*Unary) complex64
 }
 
 type visitorComplex128 interface {
-	visitBinary(*Binary) complex128
-	visitGrouping(*Grouping) complex128
-	visitLiteral(*Literal) complex128
-	visitUnary(*Unary) complex128
+	visitBinaryExpr(*Binary) complex128
+	visitGroupingExpr(*Grouping) complex128
+	visitLiteralExpr(*Literal) complex128
+	visitUnaryExpr(*Unary) complex128
 }
 
 type Binary struct {
@@ -182,83 +182,83 @@ func NewBinary(left Expr, operator Token, right Expr) *Binary {
 }
 
 func (expr *Binary) Accept(v visitor) interface{} {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptBool(v visitorBool) bool {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptString(v visitorString) string {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptInt(v visitorInt) int {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptInt8(v visitorInt8) int8 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptInt16(v visitorInt16) int16 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptInt32(v visitorInt32) int32 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptInt64(v visitorInt64) int64 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptUint(v visitorUint) uint {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptUint8(v visitorUint8) uint8 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptUint16(v visitorUint16) uint16 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptUint32(v visitorUint32) uint32 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptUint64(v visitorUint64) uint64 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptUintptr(v visitorUintptr) uintptr {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptByte(v visitorByte) byte {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptRune(v visitorRune) rune {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptFloat32(v visitorFloat32) float32 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptFloat64(v visitorFloat64) float64 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptComplex64(v visitorComplex64) complex64 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 func (expr *Binary) AcceptComplex128(v visitorComplex128) complex128 {
-	return v.visitBinary(expr)
+	return v.visitBinaryExpr(expr)
 }
 
 type Grouping struct {
@@ -275,83 +275,83 @@ func NewGrouping(expression Expr) *Grouping {
 }
 
 func (expr *Grouping) Accept(v visitor) interface{} {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptBool(v visitorBool) bool {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptString(v visitorString) string {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptInt(v visitorInt) int {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptInt8(v visitorInt8) int8 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptInt16(v visitorInt16) int16 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptInt32(v visitorInt32) int32 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptInt64(v visitorInt64) int64 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptUint(v visitorUint) uint {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptUint8(v visitorUint8) uint8 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptUint16(v visitorUint16) uint16 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptUint32(v visitorUint32) uint32 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptUint64(v visitorUint64) uint64 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptUintptr(v visitorUintptr) uintptr {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptByte(v visitorByte) byte {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptRune(v visitorRune) rune {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptFloat32(v visitorFloat32) float32 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptFloat64(v visitorFloat64) float64 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptComplex64(v visitorComplex64) complex64 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 func (expr *Grouping) AcceptComplex128(v visitorComplex128) complex128 {
-	return v.visitGrouping(expr)
+	return v.visitGroupingExpr(expr)
 }
 
 type Literal struct {
@@ -368,83 +368,83 @@ func NewLiteral(value interface{}) *Literal {
 }
 
 func (expr *Literal) Accept(v visitor) interface{} {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptBool(v visitorBool) bool {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptString(v visitorString) string {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptInt(v visitorInt) int {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptInt8(v visitorInt8) int8 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptInt16(v visitorInt16) int16 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptInt32(v visitorInt32) int32 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptInt64(v visitorInt64) int64 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptUint(v visitorUint) uint {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptUint8(v visitorUint8) uint8 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptUint16(v visitorUint16) uint16 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptUint32(v visitorUint32) uint32 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptUint64(v visitorUint64) uint64 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptUintptr(v visitorUintptr) uintptr {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptByte(v visitorByte) byte {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptRune(v visitorRune) rune {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptFloat32(v visitorFloat32) float32 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptFloat64(v visitorFloat64) float64 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptComplex64(v visitorComplex64) complex64 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 func (expr *Literal) AcceptComplex128(v visitorComplex128) complex128 {
-	return v.visitLiteral(expr)
+	return v.visitLiteralExpr(expr)
 }
 
 type Unary struct {
@@ -463,81 +463,81 @@ func NewUnary(operator Token, right Expr) *Unary {
 }
 
 func (expr *Unary) Accept(v visitor) interface{} {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptBool(v visitorBool) bool {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptString(v visitorString) string {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptInt(v visitorInt) int {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptInt8(v visitorInt8) int8 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptInt16(v visitorInt16) int16 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptInt32(v visitorInt32) int32 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptInt64(v visitorInt64) int64 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptUint(v visitorUint) uint {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptUint8(v visitorUint8) uint8 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptUint16(v visitorUint16) uint16 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptUint32(v visitorUint32) uint32 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptUint64(v visitorUint64) uint64 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptUintptr(v visitorUintptr) uintptr {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptByte(v visitorByte) byte {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptRune(v visitorRune) rune {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptFloat32(v visitorFloat32) float32 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptFloat64(v visitorFloat64) float64 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptComplex64(v visitorComplex64) complex64 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
 
 func (expr *Unary) AcceptComplex128(v visitorComplex128) complex128 {
-	return v.visitUnary(expr)
+	return v.visitUnaryExpr(expr)
 }
