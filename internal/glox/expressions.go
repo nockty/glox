@@ -2,162 +2,162 @@
 package glox
 
 type Expr interface {
-	Accept(v Visitor) interface{}
-	AcceptBool(v VisitorBool) bool
-	AcceptString(v VisitorString) string
-	AcceptInt(v VisitorInt) int
-	AcceptInt8(v VisitorInt8) int8
-	AcceptInt16(v VisitorInt16) int16
-	AcceptInt32(v VisitorInt32) int32
-	AcceptInt64(v VisitorInt64) int64
-	AcceptUint(v VisitorUint) uint
-	AcceptUint8(v VisitorUint8) uint8
-	AcceptUint16(v VisitorUint16) uint16
-	AcceptUint32(v VisitorUint32) uint32
-	AcceptUint64(v VisitorUint64) uint64
-	AcceptUintptr(v VisitorUintptr) uintptr
-	AcceptByte(v VisitorByte) byte
-	AcceptRune(v VisitorRune) rune
-	AcceptFloat32(v VisitorFloat32) float32
-	AcceptFloat64(v VisitorFloat64) float64
-	AcceptComplex64(v VisitorComplex64) complex64
-	AcceptComplex128(v VisitorComplex128) complex128
+	Accept(v visitor) interface{}
+	AcceptBool(v visitorBool) bool
+	AcceptString(v visitorString) string
+	AcceptInt(v visitorInt) int
+	AcceptInt8(v visitorInt8) int8
+	AcceptInt16(v visitorInt16) int16
+	AcceptInt32(v visitorInt32) int32
+	AcceptInt64(v visitorInt64) int64
+	AcceptUint(v visitorUint) uint
+	AcceptUint8(v visitorUint8) uint8
+	AcceptUint16(v visitorUint16) uint16
+	AcceptUint32(v visitorUint32) uint32
+	AcceptUint64(v visitorUint64) uint64
+	AcceptUintptr(v visitorUintptr) uintptr
+	AcceptByte(v visitorByte) byte
+	AcceptRune(v visitorRune) rune
+	AcceptFloat32(v visitorFloat32) float32
+	AcceptFloat64(v visitorFloat64) float64
+	AcceptComplex64(v visitorComplex64) complex64
+	AcceptComplex128(v visitorComplex128) complex128
 }
 
-type Visitor interface {
+type visitor interface {
 	visitBinary(*Binary) interface{}
 	visitGrouping(*Grouping) interface{}
 	visitLiteral(*Literal) interface{}
 	visitUnary(*Unary) interface{}
 }
 
-type VisitorBool interface {
+type visitorBool interface {
 	visitBinary(*Binary) bool
 	visitGrouping(*Grouping) bool
 	visitLiteral(*Literal) bool
 	visitUnary(*Unary) bool
 }
 
-type VisitorString interface {
+type visitorString interface {
 	visitBinary(*Binary) string
 	visitGrouping(*Grouping) string
 	visitLiteral(*Literal) string
 	visitUnary(*Unary) string
 }
 
-type VisitorInt interface {
+type visitorInt interface {
 	visitBinary(*Binary) int
 	visitGrouping(*Grouping) int
 	visitLiteral(*Literal) int
 	visitUnary(*Unary) int
 }
 
-type VisitorInt8 interface {
+type visitorInt8 interface {
 	visitBinary(*Binary) int8
 	visitGrouping(*Grouping) int8
 	visitLiteral(*Literal) int8
 	visitUnary(*Unary) int8
 }
 
-type VisitorInt16 interface {
+type visitorInt16 interface {
 	visitBinary(*Binary) int16
 	visitGrouping(*Grouping) int16
 	visitLiteral(*Literal) int16
 	visitUnary(*Unary) int16
 }
 
-type VisitorInt32 interface {
+type visitorInt32 interface {
 	visitBinary(*Binary) int32
 	visitGrouping(*Grouping) int32
 	visitLiteral(*Literal) int32
 	visitUnary(*Unary) int32
 }
 
-type VisitorInt64 interface {
+type visitorInt64 interface {
 	visitBinary(*Binary) int64
 	visitGrouping(*Grouping) int64
 	visitLiteral(*Literal) int64
 	visitUnary(*Unary) int64
 }
 
-type VisitorUint interface {
+type visitorUint interface {
 	visitBinary(*Binary) uint
 	visitGrouping(*Grouping) uint
 	visitLiteral(*Literal) uint
 	visitUnary(*Unary) uint
 }
 
-type VisitorUint8 interface {
+type visitorUint8 interface {
 	visitBinary(*Binary) uint8
 	visitGrouping(*Grouping) uint8
 	visitLiteral(*Literal) uint8
 	visitUnary(*Unary) uint8
 }
 
-type VisitorUint16 interface {
+type visitorUint16 interface {
 	visitBinary(*Binary) uint16
 	visitGrouping(*Grouping) uint16
 	visitLiteral(*Literal) uint16
 	visitUnary(*Unary) uint16
 }
 
-type VisitorUint32 interface {
+type visitorUint32 interface {
 	visitBinary(*Binary) uint32
 	visitGrouping(*Grouping) uint32
 	visitLiteral(*Literal) uint32
 	visitUnary(*Unary) uint32
 }
 
-type VisitorUint64 interface {
+type visitorUint64 interface {
 	visitBinary(*Binary) uint64
 	visitGrouping(*Grouping) uint64
 	visitLiteral(*Literal) uint64
 	visitUnary(*Unary) uint64
 }
 
-type VisitorUintptr interface {
+type visitorUintptr interface {
 	visitBinary(*Binary) uintptr
 	visitGrouping(*Grouping) uintptr
 	visitLiteral(*Literal) uintptr
 	visitUnary(*Unary) uintptr
 }
 
-type VisitorByte interface {
+type visitorByte interface {
 	visitBinary(*Binary) byte
 	visitGrouping(*Grouping) byte
 	visitLiteral(*Literal) byte
 	visitUnary(*Unary) byte
 }
 
-type VisitorRune interface {
+type visitorRune interface {
 	visitBinary(*Binary) rune
 	visitGrouping(*Grouping) rune
 	visitLiteral(*Literal) rune
 	visitUnary(*Unary) rune
 }
 
-type VisitorFloat32 interface {
+type visitorFloat32 interface {
 	visitBinary(*Binary) float32
 	visitGrouping(*Grouping) float32
 	visitLiteral(*Literal) float32
 	visitUnary(*Unary) float32
 }
 
-type VisitorFloat64 interface {
+type visitorFloat64 interface {
 	visitBinary(*Binary) float64
 	visitGrouping(*Grouping) float64
 	visitLiteral(*Literal) float64
 	visitUnary(*Unary) float64
 }
 
-type VisitorComplex64 interface {
+type visitorComplex64 interface {
 	visitBinary(*Binary) complex64
 	visitGrouping(*Grouping) complex64
 	visitLiteral(*Literal) complex64
 	visitUnary(*Unary) complex64
 }
 
-type VisitorComplex128 interface {
+type visitorComplex128 interface {
 	visitBinary(*Binary) complex128
 	visitGrouping(*Grouping) complex128
 	visitLiteral(*Literal) complex128
@@ -181,83 +181,83 @@ func NewBinary(left Expr, operator Token, right Expr) *Binary {
 	}
 }
 
-func (expr *Binary) Accept(v Visitor) interface{} {
+func (expr *Binary) Accept(v visitor) interface{} {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptBool(v VisitorBool) bool {
+func (expr *Binary) AcceptBool(v visitorBool) bool {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptString(v VisitorString) string {
+func (expr *Binary) AcceptString(v visitorString) string {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptInt(v VisitorInt) int {
+func (expr *Binary) AcceptInt(v visitorInt) int {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptInt8(v VisitorInt8) int8 {
+func (expr *Binary) AcceptInt8(v visitorInt8) int8 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptInt16(v VisitorInt16) int16 {
+func (expr *Binary) AcceptInt16(v visitorInt16) int16 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptInt32(v VisitorInt32) int32 {
+func (expr *Binary) AcceptInt32(v visitorInt32) int32 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptInt64(v VisitorInt64) int64 {
+func (expr *Binary) AcceptInt64(v visitorInt64) int64 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptUint(v VisitorUint) uint {
+func (expr *Binary) AcceptUint(v visitorUint) uint {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptUint8(v VisitorUint8) uint8 {
+func (expr *Binary) AcceptUint8(v visitorUint8) uint8 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptUint16(v VisitorUint16) uint16 {
+func (expr *Binary) AcceptUint16(v visitorUint16) uint16 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptUint32(v VisitorUint32) uint32 {
+func (expr *Binary) AcceptUint32(v visitorUint32) uint32 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptUint64(v VisitorUint64) uint64 {
+func (expr *Binary) AcceptUint64(v visitorUint64) uint64 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptUintptr(v VisitorUintptr) uintptr {
+func (expr *Binary) AcceptUintptr(v visitorUintptr) uintptr {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptByte(v VisitorByte) byte {
+func (expr *Binary) AcceptByte(v visitorByte) byte {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptRune(v VisitorRune) rune {
+func (expr *Binary) AcceptRune(v visitorRune) rune {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptFloat32(v VisitorFloat32) float32 {
+func (expr *Binary) AcceptFloat32(v visitorFloat32) float32 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptFloat64(v VisitorFloat64) float64 {
+func (expr *Binary) AcceptFloat64(v visitorFloat64) float64 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptComplex64(v VisitorComplex64) complex64 {
+func (expr *Binary) AcceptComplex64(v visitorComplex64) complex64 {
 	return v.visitBinary(expr)
 }
 
-func (expr *Binary) AcceptComplex128(v VisitorComplex128) complex128 {
+func (expr *Binary) AcceptComplex128(v visitorComplex128) complex128 {
 	return v.visitBinary(expr)
 }
 
@@ -274,83 +274,83 @@ func NewGrouping(expression Expr) *Grouping {
 	}
 }
 
-func (expr *Grouping) Accept(v Visitor) interface{} {
+func (expr *Grouping) Accept(v visitor) interface{} {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptBool(v VisitorBool) bool {
+func (expr *Grouping) AcceptBool(v visitorBool) bool {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptString(v VisitorString) string {
+func (expr *Grouping) AcceptString(v visitorString) string {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptInt(v VisitorInt) int {
+func (expr *Grouping) AcceptInt(v visitorInt) int {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptInt8(v VisitorInt8) int8 {
+func (expr *Grouping) AcceptInt8(v visitorInt8) int8 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptInt16(v VisitorInt16) int16 {
+func (expr *Grouping) AcceptInt16(v visitorInt16) int16 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptInt32(v VisitorInt32) int32 {
+func (expr *Grouping) AcceptInt32(v visitorInt32) int32 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptInt64(v VisitorInt64) int64 {
+func (expr *Grouping) AcceptInt64(v visitorInt64) int64 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptUint(v VisitorUint) uint {
+func (expr *Grouping) AcceptUint(v visitorUint) uint {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptUint8(v VisitorUint8) uint8 {
+func (expr *Grouping) AcceptUint8(v visitorUint8) uint8 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptUint16(v VisitorUint16) uint16 {
+func (expr *Grouping) AcceptUint16(v visitorUint16) uint16 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptUint32(v VisitorUint32) uint32 {
+func (expr *Grouping) AcceptUint32(v visitorUint32) uint32 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptUint64(v VisitorUint64) uint64 {
+func (expr *Grouping) AcceptUint64(v visitorUint64) uint64 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptUintptr(v VisitorUintptr) uintptr {
+func (expr *Grouping) AcceptUintptr(v visitorUintptr) uintptr {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptByte(v VisitorByte) byte {
+func (expr *Grouping) AcceptByte(v visitorByte) byte {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptRune(v VisitorRune) rune {
+func (expr *Grouping) AcceptRune(v visitorRune) rune {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptFloat32(v VisitorFloat32) float32 {
+func (expr *Grouping) AcceptFloat32(v visitorFloat32) float32 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptFloat64(v VisitorFloat64) float64 {
+func (expr *Grouping) AcceptFloat64(v visitorFloat64) float64 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptComplex64(v VisitorComplex64) complex64 {
+func (expr *Grouping) AcceptComplex64(v visitorComplex64) complex64 {
 	return v.visitGrouping(expr)
 }
 
-func (expr *Grouping) AcceptComplex128(v VisitorComplex128) complex128 {
+func (expr *Grouping) AcceptComplex128(v visitorComplex128) complex128 {
 	return v.visitGrouping(expr)
 }
 
@@ -367,83 +367,83 @@ func NewLiteral(value interface{}) *Literal {
 	}
 }
 
-func (expr *Literal) Accept(v Visitor) interface{} {
+func (expr *Literal) Accept(v visitor) interface{} {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptBool(v VisitorBool) bool {
+func (expr *Literal) AcceptBool(v visitorBool) bool {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptString(v VisitorString) string {
+func (expr *Literal) AcceptString(v visitorString) string {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptInt(v VisitorInt) int {
+func (expr *Literal) AcceptInt(v visitorInt) int {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptInt8(v VisitorInt8) int8 {
+func (expr *Literal) AcceptInt8(v visitorInt8) int8 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptInt16(v VisitorInt16) int16 {
+func (expr *Literal) AcceptInt16(v visitorInt16) int16 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptInt32(v VisitorInt32) int32 {
+func (expr *Literal) AcceptInt32(v visitorInt32) int32 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptInt64(v VisitorInt64) int64 {
+func (expr *Literal) AcceptInt64(v visitorInt64) int64 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptUint(v VisitorUint) uint {
+func (expr *Literal) AcceptUint(v visitorUint) uint {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptUint8(v VisitorUint8) uint8 {
+func (expr *Literal) AcceptUint8(v visitorUint8) uint8 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptUint16(v VisitorUint16) uint16 {
+func (expr *Literal) AcceptUint16(v visitorUint16) uint16 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptUint32(v VisitorUint32) uint32 {
+func (expr *Literal) AcceptUint32(v visitorUint32) uint32 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptUint64(v VisitorUint64) uint64 {
+func (expr *Literal) AcceptUint64(v visitorUint64) uint64 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptUintptr(v VisitorUintptr) uintptr {
+func (expr *Literal) AcceptUintptr(v visitorUintptr) uintptr {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptByte(v VisitorByte) byte {
+func (expr *Literal) AcceptByte(v visitorByte) byte {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptRune(v VisitorRune) rune {
+func (expr *Literal) AcceptRune(v visitorRune) rune {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptFloat32(v VisitorFloat32) float32 {
+func (expr *Literal) AcceptFloat32(v visitorFloat32) float32 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptFloat64(v VisitorFloat64) float64 {
+func (expr *Literal) AcceptFloat64(v visitorFloat64) float64 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptComplex64(v VisitorComplex64) complex64 {
+func (expr *Literal) AcceptComplex64(v visitorComplex64) complex64 {
 	return v.visitLiteral(expr)
 }
 
-func (expr *Literal) AcceptComplex128(v VisitorComplex128) complex128 {
+func (expr *Literal) AcceptComplex128(v visitorComplex128) complex128 {
 	return v.visitLiteral(expr)
 }
 
@@ -462,82 +462,82 @@ func NewUnary(operator Token, right Expr) *Unary {
 	}
 }
 
-func (expr *Unary) Accept(v Visitor) interface{} {
+func (expr *Unary) Accept(v visitor) interface{} {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptBool(v VisitorBool) bool {
+func (expr *Unary) AcceptBool(v visitorBool) bool {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptString(v VisitorString) string {
+func (expr *Unary) AcceptString(v visitorString) string {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptInt(v VisitorInt) int {
+func (expr *Unary) AcceptInt(v visitorInt) int {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptInt8(v VisitorInt8) int8 {
+func (expr *Unary) AcceptInt8(v visitorInt8) int8 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptInt16(v VisitorInt16) int16 {
+func (expr *Unary) AcceptInt16(v visitorInt16) int16 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptInt32(v VisitorInt32) int32 {
+func (expr *Unary) AcceptInt32(v visitorInt32) int32 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptInt64(v VisitorInt64) int64 {
+func (expr *Unary) AcceptInt64(v visitorInt64) int64 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptUint(v VisitorUint) uint {
+func (expr *Unary) AcceptUint(v visitorUint) uint {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptUint8(v VisitorUint8) uint8 {
+func (expr *Unary) AcceptUint8(v visitorUint8) uint8 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptUint16(v VisitorUint16) uint16 {
+func (expr *Unary) AcceptUint16(v visitorUint16) uint16 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptUint32(v VisitorUint32) uint32 {
+func (expr *Unary) AcceptUint32(v visitorUint32) uint32 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptUint64(v VisitorUint64) uint64 {
+func (expr *Unary) AcceptUint64(v visitorUint64) uint64 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptUintptr(v VisitorUintptr) uintptr {
+func (expr *Unary) AcceptUintptr(v visitorUintptr) uintptr {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptByte(v VisitorByte) byte {
+func (expr *Unary) AcceptByte(v visitorByte) byte {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptRune(v VisitorRune) rune {
+func (expr *Unary) AcceptRune(v visitorRune) rune {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptFloat32(v VisitorFloat32) float32 {
+func (expr *Unary) AcceptFloat32(v visitorFloat32) float32 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptFloat64(v VisitorFloat64) float64 {
+func (expr *Unary) AcceptFloat64(v visitorFloat64) float64 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptComplex64(v VisitorComplex64) complex64 {
+func (expr *Unary) AcceptComplex64(v visitorComplex64) complex64 {
 	return v.visitUnary(expr)
 }
 
-func (expr *Unary) AcceptComplex128(v VisitorComplex128) complex128 {
+func (expr *Unary) AcceptComplex128(v visitorComplex128) complex128 {
 	return v.visitUnary(expr)
 }
