@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -48,7 +47,6 @@ func runPrompt() {
 func run(source string) {
 	scanner := lox.NewScanner(source)
 	tokens := scanner.ScanTokens()
-	fmt.Printf("Tokens: %v\n", tokens)
 	parser := lox.NewParser(tokens)
 	expr := parser.Parse()
 	if parser.HadErrors() {
