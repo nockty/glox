@@ -1,4 +1,4 @@
-package glox
+package lox
 
 // TokenType TODO
 type TokenType int
@@ -52,17 +52,17 @@ const (
 
 // Token TODO
 type Token struct {
-	TokenType TokenType
-	Lexeme    string
-	Literal   interface{}
-	Line      int
+	Type    TokenType
+	Lexeme  string
+	Literal interface{}
+	Line    int
 }
 
 func NewToken(tokenType TokenType, lexeme string, literal interface{}, line int) Token {
 	return Token{
-		TokenType: tokenType,
-		Lexeme:    lexeme,
-		Literal:   literal,
-		Line:      line,
+		Type:    tokenType,
+		Lexeme:  lexeme,
+		Literal: literal,
+		Line:    line,
 	}
 }

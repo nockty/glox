@@ -11,7 +11,7 @@ go build generate_ast.go
 ## Usage
 
 ```bash
-./generate_ast ../internal/glox/
+./generate_ast ../internal/lox/
 ```
 
 This will create the `expressions.go` file in the `../internal/glox/` folder.
