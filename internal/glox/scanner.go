@@ -39,13 +39,14 @@ func NewScanner(source string) *Scanner {
 	}
 }
 
-func (s *Scanner) scanTokens() {
+func (s *Scanner) ScanTokens() []Token {
 	for !s.isAtEnd() {
 		// Beginning of the next lexeme
 		s.start = s.current
 		s.scanToken()
 	}
 	s.tokens = append(s.tokens, NewToken(EOF, "", nil, s.line))
+	return s.tokens
 }
 
 func (s *Scanner) scanToken() {
@@ -182,7 +183,7 @@ func (s *Scanner) number() {
 			s.advance()
 		}
 	}
-	value, err := strconv.ParseFloat(s.source[s.start:s.current-1], 64)
+	value, err := strconv.ParseFloat(s.source[s.start:s.current], 64)
 	if err != nil {
 		// TODO what to do here? Out of range float
 	}
@@ -202,7 +203,7 @@ func (s *Scanner) identifier() {
 }
 
 func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
-	text := s.source[s.start : s.current-1]
+	text := s.source[s.start:s.current]
 	s.tokens = append(s.tokens, NewToken(tokenType, text, literal, s.line))
 }
 
