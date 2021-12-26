@@ -36,7 +36,7 @@ func main() {
 	}
 	err := defineAST(outDir, "Expr", types)
 	if err != nil {
-		println(fmt.Errorf("failed to generate AST: %v", err).Error())
+		println(fmt.Errorf("failed to generate AST: %w", err).Error())
 	}
 }
 
@@ -44,7 +44,7 @@ func writeLines(w *bufio.Writer, lines []string) error {
 	for _, line := range lines {
 		_, err := fmt.Fprintln(w, line)
 		if err != nil {
-			return fmt.Errorf("write line: %v", err)
+			return fmt.Errorf("write line: %w", err)
 		}
 	}
 	return w.Flush()
@@ -54,7 +54,7 @@ func defineAST(outDir, baseName string, types []string) error {
 	path := path.Join(outDir, strings.ToLower(baseName)+".go")
 	f, err := os.Create(path)
 	if err != nil {
-		return fmt.Errorf("create %v: %v", path, err)
+		return fmt.Errorf("create %v: %w", path, err)
 	}
 	defer f.Close()
 	buf := bytes.NewBuffer(nil)
@@ -71,11 +71,11 @@ func defineAST(outDir, baseName string, types []string) error {
 	}
 	err = defineExpr(w)
 	if err != nil {
-		return fmt.Errorf("define Expr: %v", err)
+		return fmt.Errorf("define Expr: %w", err)
 	}
 	err = defineVisitor(w, baseName, types)
 	if err != nil {
-		return fmt.Errorf("define visitor: %v", err)
+		return fmt.Errorf("define visitor: %w", err)
 	}
 	// types
 	for _, exprType := range types {
@@ -84,17 +84,17 @@ func defineAST(outDir, baseName string, types []string) error {
 		fields := strings.TrimSpace(components[1])
 		err := defineType(w, baseName, typeName, fields)
 		if err != nil {
-			return fmt.Errorf("define type %v: %v", typeName, err)
+			return fmt.Errorf("define type %v: %w", typeName, err)
 		}
 	}
 	// format source code
 	source, err := format.Source(buf.Bytes())
 	if err != nil {
-		return fmt.Errorf("format code: %v", err)
+		return fmt.Errorf("format code: %w", err)
 	}
 	_, err = f.Write(source)
 	if err != nil {
-		return fmt.Errorf("write code to file %v: %v", f, err)
+		return fmt.Errorf("write code to file %v: %w", f, err)
 	}
 	return nil
 }
