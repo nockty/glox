@@ -1,4 +1,4 @@
-module glox
+module github.com/nockty/glox
 
 go 1.17
 
