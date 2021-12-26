@@ -2,9 +2,12 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
+
+	"github.com/nockty/glox/internal/lox"
 )
 
 func main() {
@@ -43,6 +46,13 @@ func runPrompt() {
 }
 
 func run(source string) {
-	print(source)
+	scanner := lox.NewScanner(source)
+	tokens := scanner.ScanTokens()
+	fmt.Printf("Tokens: %v\n", tokens)
+	parser := lox.NewParser(tokens)
+	expr := parser.Parse()
+	if parser.HadErrors() {
+		return
+	}
+	(&lox.AstPrinter{}).Println(expr)
 }
-
