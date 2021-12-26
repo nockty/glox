@@ -23,7 +23,7 @@ var keywords = map[string]TokenType{
 
 type Scanner struct {
 	source string
-	tokens []*Token
+	tokens []Token
 	// first character in the lexeme being scanned
 	start int
 	// character currently being considered
