@@ -167,7 +167,7 @@ func (s *Scanner) string() {
 	// closing "
 	s.advance()
 	// trim surrounding quotes
-	value := s.source[s.start+1 : s.current-2]
+	value := s.source[s.start+1 : s.current-1]
 	s.addToken(String, value)
 }
 
@@ -195,7 +195,7 @@ func (s *Scanner) identifier() {
 		s.advance()
 	}
 	// check for reserved keywords
-	text := s.source[s.start : s.current-1]
+	text := s.source[s.start:s.current]
 	if tokenType, ok := keywords[text]; ok {
 		s.addToken(tokenType, nil)
 	}
