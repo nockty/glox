@@ -2,39 +2,43 @@ package glox
 
 import "fmt"
 
-type astPrinter struct{}
+type AstPrinter struct{}
 
 // astPrinter implements visitorString
-var _ visitorString = &astPrinter{}
+var _ visitorString = &AstPrinter{}
 
-func (a *astPrinter) Print(expr Expr) string {
+func (a *AstPrinter) Println(expr Expr) {
+	fmt.Println(a.Sprint(expr))
+}
+
+func (a *AstPrinter) Sprint(expr Expr) string {
 	return expr.AcceptString(a)
 }
 
-func (a *astPrinter) visitBinaryExpr(expr *Binary) string {
+func (a *AstPrinter) visitBinaryExpr(expr *Binary) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.left, expr.right)
 }
 
-func (a *astPrinter) visitGroupingExpr(expr *Grouping) string {
+func (a *AstPrinter) visitGroupingExpr(expr *Grouping) string {
 	return a.parenthesize("group", expr.expression)
 }
 
-func (a *astPrinter) visitLiteralExpr(expr *Literal) string {
+func (a *AstPrinter) visitLiteralExpr(expr *Literal) string {
 	if expr.value == nil {
 		return "nil"
 	}
 	return fmt.Sprintf("%v", expr.value)
 }
 
-func (a *astPrinter) visitUnaryExpr(expr *Unary) string {
+func (a *AstPrinter) visitUnaryExpr(expr *Unary) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.right)
 }
 
-func (a *astPrinter) parenthesize(name string, exprs ...Expr) string {
+func (a *AstPrinter) parenthesize(name string, exprs ...Expr) string {
 	s := fmt.Sprintf("(%s", name)
 	for _, expr := range exprs {
 		s += " "
-		s += a.Print(expr)
+		s += a.Sprint(expr)
 	}
 	s += ")"
 	return s

@@ -16,6 +16,6 @@ func TestAstPrinter(t *testing.T) {
 		NewGrouping(NewLiteral(45.67)),
 	}
 	expected := "(* (- 123) (group 45.67))"
-	actual := (&astPrinter{}).Print(expr)
+	actual := (&AstPrinter{}).Sprint(expr)
 	assert.Equal(t, expected, actual)
 }
