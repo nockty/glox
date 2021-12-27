@@ -17,7 +17,6 @@ func NewInterpreter() *interpreter {
 func (i *interpreter) Interpret(statements []Stmt) {
 	for _, statement := range statements {
 		err := i.execute(statement)
-		// the return value of execute is either nil or a runtime error
 		if err != nil {
 			fmt.Println(err.(*runtimeError).Error())
 			return
@@ -25,6 +24,7 @@ func (i *interpreter) Interpret(statements []Stmt) {
 	}
 }
 
+// execute returns either nil or a runtime error
 func (i *interpreter) execute(stmt Stmt) interface{} {
 	return stmt.Accept(i)
 }
@@ -35,7 +35,6 @@ func (i *interpreter) executeBlock(statements []Stmt, env *environment) interfac
 	i.env = env
 	for _, statement := range statements {
 		err := i.execute(statement)
-		// the return value of execute is either nil or a runtime error
 		if err != nil {
 			return err
 		}
@@ -52,6 +51,26 @@ func (i *interpreter) visitExpressionStmt(stmt *ExpressionStmt) interface{} {
 	err, ok := expr.(*runtimeError)
 	if ok {
 		return err
+	}
+	return nil
+}
+
+func (i *interpreter) visitIfStmt(stmt *IfStmt) interface{} {
+	condition := i.evaluate(stmt.condition)
+	err, ok := condition.(*runtimeError)
+	if ok {
+		return err
+	}
+	if isTruthy(condition) {
+		err := i.execute(stmt.thenBranch)
+		if err != nil {
+			return err
+		}
+	} else if stmt.elseBranch != nil {
+		err := i.execute(stmt.thenBranch)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -173,6 +192,25 @@ func (i *interpreter) visitGroupingExpr(expr *GroupingExpr) interface{} {
 
 func (i *interpreter) visitLiteralExpr(expr *LiteralExpr) interface{} {
 	return expr.value
+}
+
+func (i *interpreter) visitLogicalExpr(expr *LogicalExpr) interface{} {
+	left := i.evaluate(expr.left)
+	err, ok := left.(*runtimeError)
+	if ok {
+		return err
+	}
+	if expr.operator.Type == Or {
+		if isTruthy(left) {
+			return left
+		}
+	} else {
+		if !isTruthy(left) {
+			return left
+		}
+	}
+
+	return i.evaluate(expr.right)
 }
 
 func (i *interpreter) visitUnaryExpr(expr *UnaryExpr) interface{} {

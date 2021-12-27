@@ -1,6 +1,8 @@
 package lox
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type parser struct {
 	tokens  []Token
@@ -17,17 +19,23 @@ type parser struct {
 //
 // varDecl     → "var" IDENTIFIER ( "=" expression )? ";" ;
 //
-// statement   → exprStmt | printStmt | block ;
-//
-// block       → "{" declaration* "}" ;
+// statement   → exprStmt | ifStmt | printStmt | block ;
 //
 // exprStmt    → expression ";" ;
 //
+// ifStmt      → "if" "(" expression ")" statement ( "else" statement )? ;
+//
 // printStmt   → "print" expression ";" ;
+//
+// block       → "{" declaration* "}" ;
 //
 // expression  → assignment ;
 //
-// assignment  → IDENTIFIER "=" assignment | equality ;
+// assignment  → IDENTIFIER "=" assignment | logic_or ;
+//
+// logic_or    → logic_and ( "or" logic_and )* ;
+//
+// logic_and   → equality ( "and" equality )* ;
 //
 // equality    → comparison ( ( "!=" | "==" ) comparison )* ;
 //
@@ -105,6 +113,9 @@ func (p *parser) varDeclaration() (Stmt, *parseError) {
 }
 
 func (p *parser) statement() (Stmt, *parseError) {
+	if p.match(If) {
+		return p.ifStatement()
+	}
 	if p.match(Print) {
 		return p.printStatement()
 	}
@@ -116,6 +127,35 @@ func (p *parser) statement() (Stmt, *parseError) {
 		return NewBlockStmt(statements), nil
 	}
 	return p.expressionStatement()
+}
+
+func (p *parser) ifStatement() (Stmt, *parseError) {
+	_, err := p.consume(LeftParen, "Expect '(' after 'if'.")
+	if err != nil {
+		return nil, err
+	}
+	condition, err := p.expression()
+	if err != nil {
+		return nil, err
+	}
+	_, err = p.consume(RightParen, "Expect ')' after if condition.")
+	if err != nil {
+		return nil, err
+	}
+
+	thenBranch, err := p.statement()
+	if err != nil {
+		return nil, err
+	}
+	var elseBranch Stmt = nil
+	if p.match(Else) {
+		elseBranch, err = p.statement()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return NewIfStmt(condition, thenBranch, elseBranch), nil
 }
 
 func (p *parser) printStatement() (Stmt, *parseError) {
@@ -161,7 +201,7 @@ func (p *parser) expression() (Expr, *parseError) {
 }
 
 func (p *parser) assignment() (Expr, *parseError) {
-	expr, err := p.equality()
+	expr, err := p.or()
 	if err != nil {
 		return nil, err
 	}
@@ -179,6 +219,42 @@ func (p *parser) assignment() (Expr, *parseError) {
 		// Add error but don't return it because the parser isn’t in a confused state where we need to go
 		// into panic mode and synchronize.
 		p.errors = append(p.errors, p.error(equals, "Invalid assignment target."))
+	}
+
+	return expr, nil
+}
+
+func (p *parser) or() (Expr, *parseError) {
+	expr, err := p.and()
+	if err != nil {
+		return nil, err
+	}
+
+	for p.match(Or) {
+		operator := p.previous()
+		right, err := p.equality()
+		if err != nil {
+			return nil, err
+		}
+		expr = NewLogicalExpr(expr, operator, right)
+	}
+
+	return expr, nil
+}
+
+func (p *parser) and() (Expr, *parseError) {
+	expr, err := p.equality()
+	if err != nil {
+		return nil, err
+	}
+
+	for p.match(And) {
+		operator := p.previous()
+		right, err := p.equality()
+		if err != nil {
+			return nil, err
+		}
+		expr = NewLogicalExpr(expr, operator, right)
 	}
 
 	return expr, nil

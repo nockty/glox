@@ -34,6 +34,10 @@ func (a *AstPrinter) visitLiteralExpr(expr *LiteralExpr) string {
 	return fmt.Sprintf("%v", expr.value)
 }
 
+func (a *AstPrinter) visitLogicalExpr(expr *LogicalExpr) string {
+	return a.parenthesize(expr.operator.Lexeme, expr.left, expr.right)
+}
+
 func (a *AstPrinter) visitUnaryExpr(expr *UnaryExpr) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.right)
 }

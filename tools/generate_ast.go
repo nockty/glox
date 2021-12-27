@@ -33,6 +33,7 @@ func main() {
 		"Binary   : left Expr, operator Token, right Expr",
 		"Grouping : expression Expr",
 		"Literal  : value interface{}",
+		"Logical  : left Expr, operator Token, right Expr",
 		"Unary    : operator Token, right Expr",
 		"Variable : name Token",
 	}
@@ -43,6 +44,7 @@ func main() {
 	types = []string{
 		"Block      : statements []Stmt",
 		"Expression : expression Expr",
+		"If         : condition Expr, thenBranch Stmt, elseBranch Stmt",
 		"Print      : expression Expr",
 		"Var        : name Token, initializer Expr",
 	}
