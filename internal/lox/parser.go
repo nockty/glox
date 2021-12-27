@@ -23,7 +23,9 @@ type parser struct {
 //
 // printStmt   → "print" expression ";" ;
 //
-// expression  → equality ;
+// expression  → assignment ;
+//
+// assignment  → IDENTIFIER "=" assignment | equality ;
 //
 // equality    → comparison ( ( "!=" | "==" ) comparison )* ;
 //
@@ -88,6 +90,9 @@ func (p *parser) varDeclaration() (Stmt, *parseError) {
 	var initializer Expr = nil
 	if p.match(Equal) {
 		initializer, err = p.expression()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	_, err = p.consume(Semicolon, "Expect ';' after value.")
@@ -129,7 +134,31 @@ func (p *parser) expressionStatement() (Stmt, *parseError) {
 }
 
 func (p *parser) expression() (Expr, *parseError) {
-	return p.equality()
+	return p.assignment()
+}
+
+func (p *parser) assignment() (Expr, *parseError) {
+	expr, err := p.equality()
+	if err != nil {
+		return nil, err
+	}
+
+	if p.match(Equal) {
+		equals := p.previous()
+		value, err := p.assignment()
+		if err != nil {
+			return nil, err
+		}
+		variable, ok := expr.(*VariableExpr)
+		if ok {
+			return NewAssignExpr(variable.name, value), nil
+		}
+		// Add error but don't return it because the parser isn’t in a confused state where we need to go
+		// into panic mode and synchronize.
+		p.errors = append(p.errors, p.error(equals, "Invalid assignment target."))
+	}
+
+	return expr, nil
 }
 
 func (p *parser) equality() (Expr, *parseError) {

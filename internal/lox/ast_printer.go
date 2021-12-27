@@ -15,6 +15,10 @@ func (a *AstPrinter) Sprint(expr Expr) string {
 	return expr.AcceptString(a)
 }
 
+func (a *AstPrinter) visitAssignExpr(expr *AssignExpr) string {
+	return a.parenthesize(fmt.Sprintf("%s =", expr.name.Lexeme), expr.value)
+}
+
 func (a *AstPrinter) visitBinaryExpr(expr *BinaryExpr) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.left, expr.right)
 }

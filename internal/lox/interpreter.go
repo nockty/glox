@@ -61,6 +61,19 @@ func (i *interpreter) visitVarStmt(stmt *VarStmt) interface{} {
 	return nil
 }
 
+func (i *interpreter) visitAssignExpr(expr *AssignExpr) interface{} {
+	value := i.evaluate(expr.value)
+	err, ok := value.(*runtimeError)
+	if ok {
+		return err
+	}
+	err = i.env.assign(expr.name, value)
+	if err != nil {
+		return err
+	}
+	return value
+}
+
 func (i *interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
 	left := i.evaluate(expr.left)
 	err, ok := left.(*runtimeError)
