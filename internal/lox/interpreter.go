@@ -4,21 +4,46 @@ import "fmt"
 
 type Interpreter struct{}
 
-// Interpreter implements visitor
+// Interpreter implements visitorExpr and visitorStmt
 var _ visitorExpr = &Interpreter{}
+var _ visitorStmt = &Interpreter{}
 
-func (i *Interpreter) Interpret(expr Expr) {
-	value := i.evaluate(expr)
-	err, ok := value.(*runtimeError)
-	if ok {
-		fmt.Println(err.Error())
-		return
+func (i *Interpreter) Interpret(statements []Stmt) {
+	for _, statement := range statements {
+		err := i.execute(statement)
+		// the return value of execute is either nil or a runtime error
+		if err != nil {
+			fmt.Println(err.(*runtimeError).Error())
+			return
+		}
 	}
-	fmt.Println(value)
+}
+
+func (i *Interpreter) execute(stmt Stmt) interface{} {
+	return stmt.Accept(i)
 }
 
 func (i *Interpreter) evaluate(expr Expr) interface{} {
 	return expr.Accept(i)
+}
+
+func (i *Interpreter) visitExpressionStmt(stmt *ExpressionStmt) interface{} {
+	expr := i.evaluate(stmt.expression)
+	err, ok := expr.(*runtimeError)
+	if ok {
+		return err
+	}
+	return nil
+}
+
+func (i *Interpreter) visitPrintStmt(stmt *PrintStmt) interface{} {
+	value := i.evaluate(stmt.expression)
+	err, ok := value.(*runtimeError)
+	if ok {
+		return err
+	}
+	fmt.Println(value)
+	return nil
 }
 
 func (i *Interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {

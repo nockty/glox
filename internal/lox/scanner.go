@@ -198,6 +198,7 @@ func (s *Scanner) identifier() {
 	text := s.source[s.start:s.current]
 	if tokenType, ok := keywords[text]; ok {
 		s.addToken(tokenType, nil)
+		return
 	}
 	s.addToken(Identifier, nil)
 }

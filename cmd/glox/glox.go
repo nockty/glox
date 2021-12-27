@@ -49,9 +49,9 @@ func run(source string) {
 	scanner := lox.NewScanner(source)
 	tokens := scanner.ScanTokens()
 	parser := lox.NewParser(tokens)
-	expr := parser.Parse()
+	statements := parser.Parse()
 	if parser.HadErrors() {
 		return
 	}
-	(&lox.Interpreter{}).Interpret(expr)
+	(&lox.Interpreter{}).Interpret(statements)
 }

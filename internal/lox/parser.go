@@ -40,13 +40,19 @@ func NewParser(tokens []Token) *parser {
 	}
 }
 
-func (p *parser) Parse() Expr {
-	expr, err := p.expression()
-	if err != nil {
-		p.errors = append(p.errors, err)
-		return nil
+func (p *parser) Parse() []Stmt {
+	statements := make([]Stmt, 0)
+	for !p.isAtEnd() {
+		statement, err := p.statement()
+		if err != nil {
+			p.errors = append(p.errors, err)
+			p.synchronize()
+			continue
+		}
+		statements = append(statements, statement)
 	}
-	return expr
+
+	return statements
 }
 
 // TODO change this to see how we want to handle errors
@@ -57,6 +63,37 @@ func (p *parser) HadErrors() bool {
 		hadErrors = true
 	}
 	return hadErrors
+}
+
+func (p *parser) statement() (Stmt, *parseError) {
+	if p.match(Print) {
+		return p.printStatement()
+	}
+	return p.expressionStatement()
+}
+
+func (p *parser) printStatement() (Stmt, *parseError) {
+	value, err := p.expression()
+	if err != nil {
+		return nil, err
+	}
+	_, err = p.consume(Semicolon, "Expect ';' after value.")
+	if err != nil {
+		return nil, err
+	}
+	return NewPrintStmt(value), nil
+}
+
+func (p *parser) expressionStatement() (Stmt, *parseError) {
+	value, err := p.expression()
+	if err != nil {
+		return nil, err
+	}
+	_, err = p.consume(Semicolon, "Expect ';' after expression.")
+	if err != nil {
+		return nil, err
+	}
+	return NewExpressionStmt(value), nil
 }
 
 func (p *parser) expression() (Expr, *parseError) {
@@ -254,5 +291,5 @@ type parseError struct {
 }
 
 func (e *parseError) Error() string {
-	return fmt.Sprintf("[line %d] Error%s: %s", e.line, e.where, e.message)
+	return fmt.Sprintf("[line %d] Error %s: %s", e.line, e.where, e.message)
 }
