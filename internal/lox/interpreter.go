@@ -2,13 +2,19 @@ package lox
 
 import "fmt"
 
-type Interpreter struct{}
+type interpreter struct {
+	env *environment
+}
 
-// Interpreter implements visitorExpr and visitorStmt
-var _ visitorExpr = &Interpreter{}
-var _ visitorStmt = &Interpreter{}
+// interpreter implements visitorExpr and visitorStmt
+var _ visitorExpr = &interpreter{}
+var _ visitorStmt = &interpreter{}
 
-func (i *Interpreter) Interpret(statements []Stmt) {
+func NewInterpreter() *interpreter {
+	return &interpreter{env: newEnvironment()}
+}
+
+func (i *interpreter) Interpret(statements []Stmt) {
 	for _, statement := range statements {
 		err := i.execute(statement)
 		// the return value of execute is either nil or a runtime error
@@ -19,15 +25,15 @@ func (i *Interpreter) Interpret(statements []Stmt) {
 	}
 }
 
-func (i *Interpreter) execute(stmt Stmt) interface{} {
+func (i *interpreter) execute(stmt Stmt) interface{} {
 	return stmt.Accept(i)
 }
 
-func (i *Interpreter) evaluate(expr Expr) interface{} {
+func (i *interpreter) evaluate(expr Expr) interface{} {
 	return expr.Accept(i)
 }
 
-func (i *Interpreter) visitExpressionStmt(stmt *ExpressionStmt) interface{} {
+func (i *interpreter) visitExpressionStmt(stmt *ExpressionStmt) interface{} {
 	expr := i.evaluate(stmt.expression)
 	err, ok := expr.(*runtimeError)
 	if ok {
@@ -36,7 +42,7 @@ func (i *Interpreter) visitExpressionStmt(stmt *ExpressionStmt) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitPrintStmt(stmt *PrintStmt) interface{} {
+func (i *interpreter) visitPrintStmt(stmt *PrintStmt) interface{} {
 	value := i.evaluate(stmt.expression)
 	err, ok := value.(*runtimeError)
 	if ok {
@@ -46,7 +52,16 @@ func (i *Interpreter) visitPrintStmt(stmt *PrintStmt) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
+func (i *interpreter) visitVarStmt(stmt *VarStmt) interface{} {
+	var value interface{} = nil
+	if stmt.initializer != nil {
+		value = i.evaluate(stmt.initializer)
+	}
+	i.env.define(stmt.name.Lexeme, value)
+	return nil
+}
+
+func (i *interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
 	left := i.evaluate(expr.left)
 	err, ok := left.(*runtimeError)
 	if ok {
@@ -121,15 +136,15 @@ func (i *Interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitGroupingExpr(expr *GroupingExpr) interface{} {
+func (i *interpreter) visitGroupingExpr(expr *GroupingExpr) interface{} {
 	return i.evaluate(expr.expression)
 }
 
-func (i *Interpreter) visitLiteralExpr(expr *LiteralExpr) interface{} {
+func (i *interpreter) visitLiteralExpr(expr *LiteralExpr) interface{} {
 	return expr.value
 }
 
-func (i *Interpreter) visitUnaryExpr(expr *UnaryExpr) interface{} {
+func (i *interpreter) visitUnaryExpr(expr *UnaryExpr) interface{} {
 	right := i.evaluate(expr.right)
 	err, ok := right.(*runtimeError)
 	if ok {
@@ -149,6 +164,14 @@ func (i *Interpreter) visitUnaryExpr(expr *UnaryExpr) interface{} {
 
 	// unreachable
 	return nil
+}
+
+func (i *interpreter) visitVariableExpr(expr *VariableExpr) interface{} {
+	value, err := i.env.get(expr.name)
+	if err != nil {
+		return err
+	}
+	return value
 }
 
 func isTruthy(value interface{}) bool {

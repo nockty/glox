@@ -33,6 +33,7 @@ func main() {
 		"Grouping : expression Expr",
 		"Literal  : value interface{}",
 		"Unary    : operator Token, right Expr",
+		"Variable : name Token",
 	}
 	err := defineAST(outDir, "Expr", types)
 	if err != nil {
@@ -41,6 +42,7 @@ func main() {
 	types = []string{
 		"Expression : expression Expr",
 		"Print      : expression Expr",
+		"Var        : name Token, initializer Expr",
 	}
 	err = defineAST(outDir, "Stmt", types)
 	if err != nil {

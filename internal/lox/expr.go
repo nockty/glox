@@ -29,6 +29,7 @@ type visitorExpr interface {
 	visitGroupingExpr(*GroupingExpr) interface{}
 	visitLiteralExpr(*LiteralExpr) interface{}
 	visitUnaryExpr(*UnaryExpr) interface{}
+	visitVariableExpr(*VariableExpr) interface{}
 }
 
 type visitorExprBool interface {
@@ -36,6 +37,7 @@ type visitorExprBool interface {
 	visitGroupingExpr(*GroupingExpr) bool
 	visitLiteralExpr(*LiteralExpr) bool
 	visitUnaryExpr(*UnaryExpr) bool
+	visitVariableExpr(*VariableExpr) bool
 }
 
 type visitorExprString interface {
@@ -43,6 +45,7 @@ type visitorExprString interface {
 	visitGroupingExpr(*GroupingExpr) string
 	visitLiteralExpr(*LiteralExpr) string
 	visitUnaryExpr(*UnaryExpr) string
+	visitVariableExpr(*VariableExpr) string
 }
 
 type visitorExprInt interface {
@@ -50,6 +53,7 @@ type visitorExprInt interface {
 	visitGroupingExpr(*GroupingExpr) int
 	visitLiteralExpr(*LiteralExpr) int
 	visitUnaryExpr(*UnaryExpr) int
+	visitVariableExpr(*VariableExpr) int
 }
 
 type visitorExprInt8 interface {
@@ -57,6 +61,7 @@ type visitorExprInt8 interface {
 	visitGroupingExpr(*GroupingExpr) int8
 	visitLiteralExpr(*LiteralExpr) int8
 	visitUnaryExpr(*UnaryExpr) int8
+	visitVariableExpr(*VariableExpr) int8
 }
 
 type visitorExprInt16 interface {
@@ -64,6 +69,7 @@ type visitorExprInt16 interface {
 	visitGroupingExpr(*GroupingExpr) int16
 	visitLiteralExpr(*LiteralExpr) int16
 	visitUnaryExpr(*UnaryExpr) int16
+	visitVariableExpr(*VariableExpr) int16
 }
 
 type visitorExprInt32 interface {
@@ -71,6 +77,7 @@ type visitorExprInt32 interface {
 	visitGroupingExpr(*GroupingExpr) int32
 	visitLiteralExpr(*LiteralExpr) int32
 	visitUnaryExpr(*UnaryExpr) int32
+	visitVariableExpr(*VariableExpr) int32
 }
 
 type visitorExprInt64 interface {
@@ -78,6 +85,7 @@ type visitorExprInt64 interface {
 	visitGroupingExpr(*GroupingExpr) int64
 	visitLiteralExpr(*LiteralExpr) int64
 	visitUnaryExpr(*UnaryExpr) int64
+	visitVariableExpr(*VariableExpr) int64
 }
 
 type visitorExprUint interface {
@@ -85,6 +93,7 @@ type visitorExprUint interface {
 	visitGroupingExpr(*GroupingExpr) uint
 	visitLiteralExpr(*LiteralExpr) uint
 	visitUnaryExpr(*UnaryExpr) uint
+	visitVariableExpr(*VariableExpr) uint
 }
 
 type visitorExprUint8 interface {
@@ -92,6 +101,7 @@ type visitorExprUint8 interface {
 	visitGroupingExpr(*GroupingExpr) uint8
 	visitLiteralExpr(*LiteralExpr) uint8
 	visitUnaryExpr(*UnaryExpr) uint8
+	visitVariableExpr(*VariableExpr) uint8
 }
 
 type visitorExprUint16 interface {
@@ -99,6 +109,7 @@ type visitorExprUint16 interface {
 	visitGroupingExpr(*GroupingExpr) uint16
 	visitLiteralExpr(*LiteralExpr) uint16
 	visitUnaryExpr(*UnaryExpr) uint16
+	visitVariableExpr(*VariableExpr) uint16
 }
 
 type visitorExprUint32 interface {
@@ -106,6 +117,7 @@ type visitorExprUint32 interface {
 	visitGroupingExpr(*GroupingExpr) uint32
 	visitLiteralExpr(*LiteralExpr) uint32
 	visitUnaryExpr(*UnaryExpr) uint32
+	visitVariableExpr(*VariableExpr) uint32
 }
 
 type visitorExprUint64 interface {
@@ -113,6 +125,7 @@ type visitorExprUint64 interface {
 	visitGroupingExpr(*GroupingExpr) uint64
 	visitLiteralExpr(*LiteralExpr) uint64
 	visitUnaryExpr(*UnaryExpr) uint64
+	visitVariableExpr(*VariableExpr) uint64
 }
 
 type visitorExprUintptr interface {
@@ -120,6 +133,7 @@ type visitorExprUintptr interface {
 	visitGroupingExpr(*GroupingExpr) uintptr
 	visitLiteralExpr(*LiteralExpr) uintptr
 	visitUnaryExpr(*UnaryExpr) uintptr
+	visitVariableExpr(*VariableExpr) uintptr
 }
 
 type visitorExprByte interface {
@@ -127,6 +141,7 @@ type visitorExprByte interface {
 	visitGroupingExpr(*GroupingExpr) byte
 	visitLiteralExpr(*LiteralExpr) byte
 	visitUnaryExpr(*UnaryExpr) byte
+	visitVariableExpr(*VariableExpr) byte
 }
 
 type visitorExprRune interface {
@@ -134,6 +149,7 @@ type visitorExprRune interface {
 	visitGroupingExpr(*GroupingExpr) rune
 	visitLiteralExpr(*LiteralExpr) rune
 	visitUnaryExpr(*UnaryExpr) rune
+	visitVariableExpr(*VariableExpr) rune
 }
 
 type visitorExprFloat32 interface {
@@ -141,6 +157,7 @@ type visitorExprFloat32 interface {
 	visitGroupingExpr(*GroupingExpr) float32
 	visitLiteralExpr(*LiteralExpr) float32
 	visitUnaryExpr(*UnaryExpr) float32
+	visitVariableExpr(*VariableExpr) float32
 }
 
 type visitorExprFloat64 interface {
@@ -148,6 +165,7 @@ type visitorExprFloat64 interface {
 	visitGroupingExpr(*GroupingExpr) float64
 	visitLiteralExpr(*LiteralExpr) float64
 	visitUnaryExpr(*UnaryExpr) float64
+	visitVariableExpr(*VariableExpr) float64
 }
 
 type visitorExprComplex64 interface {
@@ -155,6 +173,7 @@ type visitorExprComplex64 interface {
 	visitGroupingExpr(*GroupingExpr) complex64
 	visitLiteralExpr(*LiteralExpr) complex64
 	visitUnaryExpr(*UnaryExpr) complex64
+	visitVariableExpr(*VariableExpr) complex64
 }
 
 type visitorExprComplex128 interface {
@@ -162,6 +181,7 @@ type visitorExprComplex128 interface {
 	visitGroupingExpr(*GroupingExpr) complex128
 	visitLiteralExpr(*LiteralExpr) complex128
 	visitUnaryExpr(*UnaryExpr) complex128
+	visitVariableExpr(*VariableExpr) complex128
 }
 
 type BinaryExpr struct {
@@ -540,4 +560,97 @@ func (expr *UnaryExpr) AcceptComplex64(v visitorExprComplex64) complex64 {
 
 func (expr *UnaryExpr) AcceptComplex128(v visitorExprComplex128) complex128 {
 	return v.visitUnaryExpr(expr)
+}
+
+type VariableExpr struct {
+	name Token
+}
+
+// VariableExpr implements Expr
+var _ Expr = &VariableExpr{}
+
+func NewVariableExpr(name Token) *VariableExpr {
+	return &VariableExpr{
+		name: name,
+	}
+}
+
+func (expr *VariableExpr) Accept(v visitorExpr) interface{} {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptBool(v visitorExprBool) bool {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptString(v visitorExprString) string {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptInt(v visitorExprInt) int {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptInt8(v visitorExprInt8) int8 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptInt16(v visitorExprInt16) int16 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptInt32(v visitorExprInt32) int32 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptInt64(v visitorExprInt64) int64 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptUint(v visitorExprUint) uint {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptUint8(v visitorExprUint8) uint8 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptUint16(v visitorExprUint16) uint16 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptUint32(v visitorExprUint32) uint32 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptUint64(v visitorExprUint64) uint64 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptUintptr(v visitorExprUintptr) uintptr {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptByte(v visitorExprByte) byte {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptRune(v visitorExprRune) rune {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptFloat32(v visitorExprFloat32) float32 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptFloat64(v visitorExprFloat64) float64 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptComplex64(v visitorExprComplex64) complex64 {
+	return v.visitVariableExpr(expr)
+}
+
+func (expr *VariableExpr) AcceptComplex128(v visitorExprComplex128) complex128 {
+	return v.visitVariableExpr(expr)
 }

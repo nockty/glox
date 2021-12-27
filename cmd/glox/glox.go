@@ -53,5 +53,5 @@ func run(source string) {
 	if parser.HadErrors() {
 		return
 	}
-	(&lox.Interpreter{}).Interpret(statements)
+	lox.NewInterpreter().Interpret(statements)
 }

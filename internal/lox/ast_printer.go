@@ -34,6 +34,10 @@ func (a *AstPrinter) visitUnaryExpr(expr *UnaryExpr) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.right)
 }
 
+func (a *AstPrinter) visitVariableExpr(expr *VariableExpr) string {
+	return a.parenthesize("var", expr)
+}
+
 func (a *AstPrinter) parenthesize(name string, exprs ...Expr) string {
 	s := fmt.Sprintf("(%s", name)
 	for _, expr := range exprs {

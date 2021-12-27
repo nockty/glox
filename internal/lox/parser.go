@@ -11,27 +11,31 @@ type parser struct {
 
 // NewParser creates a parser for the lox language. The complete expression grammar is the following:
 //
-// program    → statement* EOF ;
+// program     → declaration* EOF ;
 //
-// statement  → exprStmt | printStmt ;
+// declaration → varDecl | statement ;
 //
-// exprStmt   → expression ";" ;
+// varDecl     → "var" IDENTIFIER ( "=" expression )? ";" ;
 //
-// printStmt  → "print" expression ";" ;
+// statement   → exprStmt | printStmt ;
 //
-// expression → equality ;
+// exprStmt    → expression ";" ;
 //
-// equality   → comparison ( ( "!=" | "==" ) comparison )* ;
+// printStmt   → "print" expression ";" ;
 //
-// comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+// expression  → equality ;
 //
-// term       → factor ( ( "-" | "+" ) factor )* ;
+// equality    → comparison ( ( "!=" | "==" ) comparison )* ;
 //
-// factor     → unary ( ( "/" | "*" ) unary )* ;
+// comparison  → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 //
-// unary      → ( "!" | "-" ) unary | primary ;
+// term        → factor ( ( "-" | "+" ) factor )* ;
 //
-// primary    → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
+// factor      → unary ( ( "/" | "*" ) unary )* ;
+//
+// unary       → ( "!" | "-" ) unary | primary ;
+//
+// primary     → IDENTIFIER | NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
 func NewParser(tokens []Token) *parser {
 	return &parser{
 		tokens:  tokens,
@@ -43,13 +47,7 @@ func NewParser(tokens []Token) *parser {
 func (p *parser) Parse() []Stmt {
 	statements := make([]Stmt, 0)
 	for !p.isAtEnd() {
-		statement, err := p.statement()
-		if err != nil {
-			p.errors = append(p.errors, err)
-			p.synchronize()
-			continue
-		}
-		statements = append(statements, statement)
+		statements = append(statements, p.declaration())
 	}
 
 	return statements
@@ -63,6 +61,40 @@ func (p *parser) HadErrors() bool {
 		hadErrors = true
 	}
 	return hadErrors
+}
+
+func (p *parser) declaration() Stmt {
+	var statement Stmt
+	var err *parseError
+	if p.match(Var) {
+		statement, err = p.varDeclaration()
+	} else {
+		statement, err = p.statement()
+	}
+	if err != nil {
+		p.errors = append(p.errors, err)
+		p.synchronize()
+		return nil
+	}
+	return statement
+}
+
+func (p *parser) varDeclaration() (Stmt, *parseError) {
+	name, err := p.consume(Identifier, "Expect variable name.")
+	if err != nil {
+		return nil, err
+	}
+
+	var initializer Expr = nil
+	if p.match(Equal) {
+		initializer, err = p.expression()
+	}
+
+	_, err = p.consume(Semicolon, "Expect ';' after value.")
+	if err != nil {
+		return nil, err
+	}
+	return NewVarStmt(name, initializer), nil
 }
 
 func (p *parser) statement() (Stmt, *parseError) {
@@ -201,6 +233,10 @@ func (p *parser) primary() (Expr, *parseError) {
 
 	if p.match(Number, String) {
 		return NewLiteralExpr(p.previous().Literal), nil
+	}
+
+	if p.match(Identifier) {
+		return NewVariableExpr(p.previous()), nil
 	}
 
 	if p.match(LeftParen) {
