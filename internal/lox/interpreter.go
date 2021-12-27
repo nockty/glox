@@ -29,8 +29,22 @@ func (i *interpreter) execute(stmt Stmt) interface{} {
 	return stmt.Accept(i)
 }
 
-func (i *interpreter) evaluate(expr Expr) interface{} {
-	return expr.Accept(i)
+func (i *interpreter) executeBlock(statements []Stmt, env *environment) interface{} {
+	previous := i.env
+	defer func() { i.env = previous }()
+	i.env = env
+	for _, statement := range statements {
+		err := i.execute(statement)
+		// the return value of execute is either nil or a runtime error
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (i *interpreter) visitBlockStmt(stmt *BlockStmt) interface{} {
+	return i.executeBlock(stmt.statements, newScopedEnvironment(i.env))
 }
 
 func (i *interpreter) visitExpressionStmt(stmt *ExpressionStmt) interface{} {
@@ -59,6 +73,10 @@ func (i *interpreter) visitVarStmt(stmt *VarStmt) interface{} {
 	}
 	i.env.define(stmt.name.Lexeme, value)
 	return nil
+}
+
+func (i *interpreter) evaluate(expr Expr) interface{} {
+	return expr.Accept(i)
 }
 
 func (i *interpreter) visitAssignExpr(expr *AssignExpr) interface{} {

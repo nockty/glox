@@ -41,6 +41,7 @@ func main() {
 		println(fmt.Errorf("failed to generate Expr AST: %w", err).Error())
 	}
 	types = []string{
+		"Block      : statements []Stmt",
 		"Expression : expression Expr",
 		"Print      : expression Expr",
 		"Var        : name Token, initializer Expr",

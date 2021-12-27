@@ -25,123 +25,236 @@ type Stmt interface {
 }
 
 type visitorStmt interface {
+	visitBlockStmt(*BlockStmt) interface{}
 	visitExpressionStmt(*ExpressionStmt) interface{}
 	visitPrintStmt(*PrintStmt) interface{}
 	visitVarStmt(*VarStmt) interface{}
 }
 
 type visitorStmtBool interface {
+	visitBlockStmt(*BlockStmt) bool
 	visitExpressionStmt(*ExpressionStmt) bool
 	visitPrintStmt(*PrintStmt) bool
 	visitVarStmt(*VarStmt) bool
 }
 
 type visitorStmtString interface {
+	visitBlockStmt(*BlockStmt) string
 	visitExpressionStmt(*ExpressionStmt) string
 	visitPrintStmt(*PrintStmt) string
 	visitVarStmt(*VarStmt) string
 }
 
 type visitorStmtInt interface {
+	visitBlockStmt(*BlockStmt) int
 	visitExpressionStmt(*ExpressionStmt) int
 	visitPrintStmt(*PrintStmt) int
 	visitVarStmt(*VarStmt) int
 }
 
 type visitorStmtInt8 interface {
+	visitBlockStmt(*BlockStmt) int8
 	visitExpressionStmt(*ExpressionStmt) int8
 	visitPrintStmt(*PrintStmt) int8
 	visitVarStmt(*VarStmt) int8
 }
 
 type visitorStmtInt16 interface {
+	visitBlockStmt(*BlockStmt) int16
 	visitExpressionStmt(*ExpressionStmt) int16
 	visitPrintStmt(*PrintStmt) int16
 	visitVarStmt(*VarStmt) int16
 }
 
 type visitorStmtInt32 interface {
+	visitBlockStmt(*BlockStmt) int32
 	visitExpressionStmt(*ExpressionStmt) int32
 	visitPrintStmt(*PrintStmt) int32
 	visitVarStmt(*VarStmt) int32
 }
 
 type visitorStmtInt64 interface {
+	visitBlockStmt(*BlockStmt) int64
 	visitExpressionStmt(*ExpressionStmt) int64
 	visitPrintStmt(*PrintStmt) int64
 	visitVarStmt(*VarStmt) int64
 }
 
 type visitorStmtUint interface {
+	visitBlockStmt(*BlockStmt) uint
 	visitExpressionStmt(*ExpressionStmt) uint
 	visitPrintStmt(*PrintStmt) uint
 	visitVarStmt(*VarStmt) uint
 }
 
 type visitorStmtUint8 interface {
+	visitBlockStmt(*BlockStmt) uint8
 	visitExpressionStmt(*ExpressionStmt) uint8
 	visitPrintStmt(*PrintStmt) uint8
 	visitVarStmt(*VarStmt) uint8
 }
 
 type visitorStmtUint16 interface {
+	visitBlockStmt(*BlockStmt) uint16
 	visitExpressionStmt(*ExpressionStmt) uint16
 	visitPrintStmt(*PrintStmt) uint16
 	visitVarStmt(*VarStmt) uint16
 }
 
 type visitorStmtUint32 interface {
+	visitBlockStmt(*BlockStmt) uint32
 	visitExpressionStmt(*ExpressionStmt) uint32
 	visitPrintStmt(*PrintStmt) uint32
 	visitVarStmt(*VarStmt) uint32
 }
 
 type visitorStmtUint64 interface {
+	visitBlockStmt(*BlockStmt) uint64
 	visitExpressionStmt(*ExpressionStmt) uint64
 	visitPrintStmt(*PrintStmt) uint64
 	visitVarStmt(*VarStmt) uint64
 }
 
 type visitorStmtUintptr interface {
+	visitBlockStmt(*BlockStmt) uintptr
 	visitExpressionStmt(*ExpressionStmt) uintptr
 	visitPrintStmt(*PrintStmt) uintptr
 	visitVarStmt(*VarStmt) uintptr
 }
 
 type visitorStmtByte interface {
+	visitBlockStmt(*BlockStmt) byte
 	visitExpressionStmt(*ExpressionStmt) byte
 	visitPrintStmt(*PrintStmt) byte
 	visitVarStmt(*VarStmt) byte
 }
 
 type visitorStmtRune interface {
+	visitBlockStmt(*BlockStmt) rune
 	visitExpressionStmt(*ExpressionStmt) rune
 	visitPrintStmt(*PrintStmt) rune
 	visitVarStmt(*VarStmt) rune
 }
 
 type visitorStmtFloat32 interface {
+	visitBlockStmt(*BlockStmt) float32
 	visitExpressionStmt(*ExpressionStmt) float32
 	visitPrintStmt(*PrintStmt) float32
 	visitVarStmt(*VarStmt) float32
 }
 
 type visitorStmtFloat64 interface {
+	visitBlockStmt(*BlockStmt) float64
 	visitExpressionStmt(*ExpressionStmt) float64
 	visitPrintStmt(*PrintStmt) float64
 	visitVarStmt(*VarStmt) float64
 }
 
 type visitorStmtComplex64 interface {
+	visitBlockStmt(*BlockStmt) complex64
 	visitExpressionStmt(*ExpressionStmt) complex64
 	visitPrintStmt(*PrintStmt) complex64
 	visitVarStmt(*VarStmt) complex64
 }
 
 type visitorStmtComplex128 interface {
+	visitBlockStmt(*BlockStmt) complex128
 	visitExpressionStmt(*ExpressionStmt) complex128
 	visitPrintStmt(*PrintStmt) complex128
 	visitVarStmt(*VarStmt) complex128
+}
+
+type BlockStmt struct {
+	statements []Stmt
+}
+
+// BlockStmt implements Stmt
+var _ Stmt = &BlockStmt{}
+
+func NewBlockStmt(statements []Stmt) *BlockStmt {
+	return &BlockStmt{
+		statements: statements,
+	}
+}
+
+func (expr *BlockStmt) Accept(v visitorStmt) interface{} {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptBool(v visitorStmtBool) bool {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptString(v visitorStmtString) string {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptInt(v visitorStmtInt) int {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptInt8(v visitorStmtInt8) int8 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptInt16(v visitorStmtInt16) int16 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptInt32(v visitorStmtInt32) int32 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptInt64(v visitorStmtInt64) int64 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptUint(v visitorStmtUint) uint {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptUint8(v visitorStmtUint8) uint8 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptUint16(v visitorStmtUint16) uint16 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptUint32(v visitorStmtUint32) uint32 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptUint64(v visitorStmtUint64) uint64 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptUintptr(v visitorStmtUintptr) uintptr {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptByte(v visitorStmtByte) byte {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptRune(v visitorStmtRune) rune {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptFloat32(v visitorStmtFloat32) float32 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptFloat64(v visitorStmtFloat64) float64 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptComplex64(v visitorStmtComplex64) complex64 {
+	return v.visitBlockStmt(expr)
+}
+
+func (expr *BlockStmt) AcceptComplex128(v visitorStmtComplex128) complex128 {
+	return v.visitBlockStmt(expr)
 }
 
 type ExpressionStmt struct {

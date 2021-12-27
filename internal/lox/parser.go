@@ -17,7 +17,9 @@ type parser struct {
 //
 // varDecl     → "var" IDENTIFIER ( "=" expression )? ";" ;
 //
-// statement   → exprStmt | printStmt ;
+// statement   → exprStmt | printStmt | block ;
+//
+// block       → "{" declaration* "}" ;
 //
 // exprStmt    → expression ";" ;
 //
@@ -106,6 +108,13 @@ func (p *parser) statement() (Stmt, *parseError) {
 	if p.match(Print) {
 		return p.printStatement()
 	}
+	if p.match(LeftBrace) {
+		statements, err := p.block()
+		if err != nil {
+			return nil, err
+		}
+		return NewBlockStmt(statements), nil
+	}
 	return p.expressionStatement()
 }
 
@@ -131,6 +140,20 @@ func (p *parser) expressionStatement() (Stmt, *parseError) {
 		return nil, err
 	}
 	return NewExpressionStmt(value), nil
+}
+
+func (p *parser) block() ([]Stmt, *parseError) {
+	statements := make([]Stmt, 0)
+
+	for !p.check(RightBrace) && !p.isAtEnd() {
+		statements = append(statements, p.declaration())
+	}
+
+	_, err := p.consume(RightBrace, "Expect '}' after block.")
+	if err != nil {
+		return nil, err
+	}
+	return statements, nil
 }
 
 func (p *parser) expression() (Expr, *parseError) {
