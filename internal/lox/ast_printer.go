@@ -4,7 +4,7 @@ import "fmt"
 
 type AstPrinter struct{}
 
-// astPrinter implements visitorString
+// AstPrinter implements visitorString
 var _ visitorString = &AstPrinter{}
 
 func (a *AstPrinter) Println(expr Expr) {
