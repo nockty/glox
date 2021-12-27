@@ -38,6 +38,14 @@ func main() {
 	if err != nil {
 		println(fmt.Errorf("failed to generate Expr AST: %w", err).Error())
 	}
+	types = []string{
+		"Expression : expression Expr",
+		"Print      : expression Expr",
+	}
+	err = defineAST(outDir, "Stmt", types)
+	if err != nil {
+		println(fmt.Errorf("failed to generate Stmt AST: %w", err).Error())
+	}
 }
 
 func writeLines(w *bufio.Writer, lines []string) error {
