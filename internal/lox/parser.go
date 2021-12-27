@@ -9,6 +9,29 @@ type parser struct {
 	errors []*parseError
 }
 
+// NewParser creates a parser for the lox language. The complete expression grammar is the following:
+//
+// program    → statement* EOF ;
+//
+// statement  → exprStmt | printStmt ;
+//
+// exprStmt   → expression ";" ;
+//
+// printStmt  → "print" expression ";" ;
+//
+// expression → equality ;
+//
+// equality   → comparison ( ( "!=" | "==" ) comparison )* ;
+//
+// comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+//
+// term       → factor ( ( "-" | "+" ) factor )* ;
+//
+// factor     → unary ( ( "/" | "*" ) unary )* ;
+//
+// unary      → ( "!" | "-" ) unary | primary ;
+//
+// primary    → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
 func NewParser(tokens []Token) *parser {
 	return &parser{
 		tokens:  tokens,
