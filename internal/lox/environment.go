@@ -15,14 +15,14 @@ func (e *environment) define(name string, value interface{}) {
 }
 
 func (e *environment) assign(name Token, value interface{}) *runtimeError {
-	if _, ok := e.values[name.Lexeme]; ok {
-		e.values[name.Lexeme] = value
-		return nil
+	if _, ok := e.values[name.Lexeme]; !ok {
+		return &runtimeError{
+			token:   name,
+			message: fmt.Sprintf("Undefined variable '%s'.", name.Lexeme),
+		}
 	}
-	return &runtimeError{
-		token:   name,
-		message: fmt.Sprintf("Undefined variable '%s'.", name.Lexeme),
-	}
+	e.values[name.Lexeme] = value
+	return nil
 }
 
 func (e *environment) get(name Token) (interface{}, *runtimeError) {
