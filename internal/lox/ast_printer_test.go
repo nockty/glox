@@ -7,15 +7,51 @@ import (
 )
 
 func TestAstPrinter(t *testing.T) {
-	expr := &Binary{
-		NewUnary(
-			NewToken(Minus, "-", nil, 1),
-			NewLiteral(123),
-		),
-		NewToken(Star, "*", nil, 1),
-		NewGrouping(NewLiteral(45.67)),
+	testCases := []struct {
+		expr     Expr
+		expected string
+	}{
+		{
+			expr: NewBinaryExpr(
+				NewUnaryExpr(
+					NewToken(Minus, "-", nil, 1),
+					NewLiteralExpr(123),
+				),
+				NewToken(Star, "*", nil, 1),
+				NewGroupingExpr(NewLiteralExpr(45.67)),
+			),
+			expected: "(* (- 123) (group 45.67))",
+		},
+		{
+			expr: NewBinaryExpr(
+				NewBinaryExpr(
+					NewLiteralExpr(42),
+					NewToken(Plus, "+", nil, 1),
+					NewBinaryExpr(
+						NewLiteralExpr(50),
+						NewToken(Star, "*", nil, 1),
+						NewGroupingExpr(
+							NewBinaryExpr(
+								NewLiteralExpr(1),
+								NewToken(Plus, "+", nil, 1),
+								NewLiteralExpr(5),
+							),
+						),
+					),
+				),
+				NewToken(Minus, "-", nil, 1),
+				NewBinaryExpr(
+					NewLiteralExpr(9),
+					NewToken(Slash, "/", nil, 1),
+					NewLiteralExpr(3),
+				),
+			),
+			expected: "(- (+ 42 (* 50 (group (+ 1 5)))) (/ 9 3))",
+		},
 	}
-	expected := "(* (- 123) (group 45.67))"
-	actual := (&AstPrinter{}).Sprint(expr)
-	assert.Equal(t, expected, actual)
+
+	for _, tc := range testCases {
+		actual := (&AstPrinter{}).Sprint(tc.expr)
+		assert.Equal(t, tc.expected, actual)
+	}
 }
