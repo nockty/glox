@@ -5,7 +5,7 @@ import "fmt"
 type AstPrinter struct{}
 
 // AstPrinter implements visitorString
-var _ visitorString = &AstPrinter{}
+var _ visitorExprString = &AstPrinter{}
 
 func (a *AstPrinter) Println(expr Expr) {
 	fmt.Println(a.Sprint(expr))
@@ -15,22 +15,22 @@ func (a *AstPrinter) Sprint(expr Expr) string {
 	return expr.AcceptString(a)
 }
 
-func (a *AstPrinter) visitBinaryExpr(expr *Binary) string {
+func (a *AstPrinter) visitBinaryExpr(expr *BinaryExpr) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.left, expr.right)
 }
 
-func (a *AstPrinter) visitGroupingExpr(expr *Grouping) string {
+func (a *AstPrinter) visitGroupingExpr(expr *GroupingExpr) string {
 	return a.parenthesize("group", expr.expression)
 }
 
-func (a *AstPrinter) visitLiteralExpr(expr *Literal) string {
+func (a *AstPrinter) visitLiteralExpr(expr *LiteralExpr) string {
 	if expr.value == nil {
 		return "nil"
 	}
 	return fmt.Sprintf("%v", expr.value)
 }
 
-func (a *AstPrinter) visitUnaryExpr(expr *Unary) string {
+func (a *AstPrinter) visitUnaryExpr(expr *UnaryExpr) string {
 	return a.parenthesize(expr.operator.Lexeme, expr.right)
 }
 

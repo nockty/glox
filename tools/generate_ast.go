@@ -36,7 +36,7 @@ func main() {
 	}
 	err := defineAST(outDir, "Expr", types)
 	if err != nil {
-		println(fmt.Errorf("failed to generate AST: %w", err).Error())
+		println(fmt.Errorf("failed to generate Expr AST: %w", err).Error())
 	}
 }
 
@@ -69,7 +69,7 @@ func defineAST(outDir, baseName string, types []string) error {
 	if err != nil {
 		return err
 	}
-	err = defineExpr(w)
+	err = defineBase(w, baseName)
 	if err != nil {
 		return fmt.Errorf("define Expr: %w", err)
 	}
@@ -80,7 +80,7 @@ func defineAST(outDir, baseName string, types []string) error {
 	// types
 	for _, exprType := range types {
 		components := strings.Split(exprType, ":")
-		typeName := strings.TrimSpace(components[0])
+		typeName := strings.TrimSpace(components[0]) + strings.Title(baseName)
 		fields := strings.TrimSpace(components[1])
 		err := defineType(w, baseName, typeName, fields)
 		if err != nil {
@@ -99,32 +99,35 @@ func defineAST(outDir, baseName string, types []string) error {
 	return nil
 }
 
-func defineExpr(w *bufio.Writer) error {
-	lines := []string{"type Expr interface {", "Accept(v visitor) interface{}"}
+func defineBase(w *bufio.Writer, baseName string) error {
+	lines := []string{
+		fmt.Sprintf("type %s interface {", strings.Title(baseName)),
+		fmt.Sprintf("Accept(v visitor%s) interface{}", strings.Title(baseName)),
+	}
 	// Accept by go type
 	for _, goType := range goTypes {
-		lines = append(lines, fmt.Sprintf("Accept%s(v visitor%s) %s",
-			strings.Title(goType), strings.Title(goType), goType))
+		lines = append(lines, fmt.Sprintf("Accept%s(v visitor%s%s) %s",
+			strings.Title(goType), strings.Title(baseName), strings.Title(goType), goType))
 	}
 	lines = append(lines, "}", "")
 	return writeLines(w, lines)
 }
 
 func defineVisitor(w *bufio.Writer, baseName string, types []string) error {
-	lines := []string{"type visitor interface {"}
+	lines := []string{fmt.Sprintf("type visitor%s interface {", strings.Title(baseName))}
 	for _, exprType := range types {
-		typeName := strings.TrimSpace(strings.Split(exprType, ":")[0])
+		typeName := strings.TrimSpace(strings.Split(exprType, ":")[0]) + strings.Title(baseName)
 		lines = append(lines, fmt.Sprintf(
-			"visit%s(*%s) interface{}", typeName+baseName, typeName))
+			"visit%s(*%s) interface{}", typeName, typeName))
 	}
 	lines = append(lines, "}", "")
 	// visitor by go type
 	for _, goType := range goTypes {
-		lines = append(lines, fmt.Sprintf("type visitor%s interface {", strings.Title(goType)))
+		lines = append(lines, fmt.Sprintf("type visitor%s%s interface {", strings.Title(baseName), strings.Title(goType)))
 		for _, exprType := range types {
-			typeName := strings.TrimSpace(strings.Split(exprType, ":")[0])
+			typeName := strings.TrimSpace(strings.Split(exprType, ":")[0]) + strings.Title(baseName)
 			lines = append(lines, fmt.Sprintf(
-				"visit%s(*%s) %s", typeName+baseName, typeName, goType))
+				"visit%s(*%s) %s", typeName, typeName, goType))
 		}
 		lines = append(lines, "}", "")
 	}
@@ -141,14 +144,12 @@ func defineType(w *bufio.Writer, baseName, typeName, fieldList string) error {
 	lines := []string{
 		fmt.Sprintf("type %s struct {", typeName),
 	}
-	for _, field := range fields {
-		lines = append(lines, field)
-	}
+	lines = append(lines, fields...)
 	lines = append(lines, "}", "")
 	// implements Expr
 	lines = append(lines,
-		fmt.Sprintf("// %s implements Expr", typeName),
-		fmt.Sprintf("var _ Expr = &%s{}", typeName),
+		fmt.Sprintf("// %s implements %s", typeName, strings.Title(baseName)),
+		fmt.Sprintf("var _ %s = &%s{}", strings.Title(baseName), typeName),
 		"",
 	)
 	// constructor
@@ -163,17 +164,17 @@ func defineType(w *bufio.Writer, baseName, typeName, fieldList string) error {
 	lines = append(lines, "}", "}", "")
 	// visitor pattern
 	lines = append(lines,
-		fmt.Sprintf("func (expr *%s) Accept(v visitor) interface{} {", typeName),
-		fmt.Sprintf("return v.visit%s(expr)", typeName+baseName),
+		fmt.Sprintf("func (expr *%s) Accept(v visitor%s) interface{} {", typeName, strings.Title(baseName)),
+		fmt.Sprintf("return v.visit%s(expr)", typeName),
 		"}",
 		"",
 	)
 	// visitor pattern by go type
 	for _, goType := range goTypes {
 		lines = append(lines,
-			fmt.Sprintf("func (expr *%s) Accept%s(v visitor%s) %s {",
-				typeName, strings.Title(goType), strings.Title(goType), goType),
-			fmt.Sprintf("return v.visit%s(expr)", typeName+baseName),
+			fmt.Sprintf("func (expr *%s) Accept%s(v visitor%s%s) %s {",
+				typeName, strings.Title(goType), strings.Title(baseName), strings.Title(goType), goType),
+			fmt.Sprintf("return v.visit%s(expr)", typeName),
 			"}",
 			"",
 		)

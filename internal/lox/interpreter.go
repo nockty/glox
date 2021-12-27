@@ -5,7 +5,7 @@ import "fmt"
 type Interpreter struct{}
 
 // Interpreter implements visitor
-var _ visitor = &Interpreter{}
+var _ visitorExpr = &Interpreter{}
 
 func (i *Interpreter) Interpret(expr Expr) {
 	value := i.evaluate(expr)
@@ -21,7 +21,7 @@ func (i *Interpreter) evaluate(expr Expr) interface{} {
 	return expr.Accept(i)
 }
 
-func (i *Interpreter) visitBinaryExpr(expr *Binary) interface{} {
+func (i *Interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
 	left := i.evaluate(expr.left)
 	err, ok := left.(*runtimeError)
 	if ok {
@@ -96,15 +96,15 @@ func (i *Interpreter) visitBinaryExpr(expr *Binary) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitGroupingExpr(expr *Grouping) interface{} {
+func (i *Interpreter) visitGroupingExpr(expr *GroupingExpr) interface{} {
 	return i.evaluate(expr.expression)
 }
 
-func (i *Interpreter) visitLiteralExpr(expr *Literal) interface{} {
+func (i *Interpreter) visitLiteralExpr(expr *LiteralExpr) interface{} {
 	return expr.value
 }
 
-func (i *Interpreter) visitUnaryExpr(expr *Unary) interface{} {
+func (i *Interpreter) visitUnaryExpr(expr *UnaryExpr) interface{} {
 	right := i.evaluate(expr.right)
 	err, ok := right.(*runtimeError)
 	if ok {
