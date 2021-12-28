@@ -94,6 +94,24 @@ func (i *interpreter) visitVarStmt(stmt *VarStmt) interface{} {
 	return nil
 }
 
+func (i *interpreter) visitWhileStmt(stmt *WhileStmt) interface{} {
+	for {
+		condition := i.evaluate(stmt.condition)
+		errCondition, ok := condition.(*runtimeError)
+		if ok {
+			return errCondition
+		}
+		if !isTruthy(condition) {
+			break
+		}
+		err := i.execute(stmt.body)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (i *interpreter) evaluate(expr Expr) interface{} {
 	return expr.Accept(i)
 }

@@ -30,6 +30,7 @@ type visitorStmt interface {
 	visitIfStmt(*IfStmt) interface{}
 	visitPrintStmt(*PrintStmt) interface{}
 	visitVarStmt(*VarStmt) interface{}
+	visitWhileStmt(*WhileStmt) interface{}
 }
 
 type visitorStmtBool interface {
@@ -38,6 +39,7 @@ type visitorStmtBool interface {
 	visitIfStmt(*IfStmt) bool
 	visitPrintStmt(*PrintStmt) bool
 	visitVarStmt(*VarStmt) bool
+	visitWhileStmt(*WhileStmt) bool
 }
 
 type visitorStmtString interface {
@@ -46,6 +48,7 @@ type visitorStmtString interface {
 	visitIfStmt(*IfStmt) string
 	visitPrintStmt(*PrintStmt) string
 	visitVarStmt(*VarStmt) string
+	visitWhileStmt(*WhileStmt) string
 }
 
 type visitorStmtInt interface {
@@ -54,6 +57,7 @@ type visitorStmtInt interface {
 	visitIfStmt(*IfStmt) int
 	visitPrintStmt(*PrintStmt) int
 	visitVarStmt(*VarStmt) int
+	visitWhileStmt(*WhileStmt) int
 }
 
 type visitorStmtInt8 interface {
@@ -62,6 +66,7 @@ type visitorStmtInt8 interface {
 	visitIfStmt(*IfStmt) int8
 	visitPrintStmt(*PrintStmt) int8
 	visitVarStmt(*VarStmt) int8
+	visitWhileStmt(*WhileStmt) int8
 }
 
 type visitorStmtInt16 interface {
@@ -70,6 +75,7 @@ type visitorStmtInt16 interface {
 	visitIfStmt(*IfStmt) int16
 	visitPrintStmt(*PrintStmt) int16
 	visitVarStmt(*VarStmt) int16
+	visitWhileStmt(*WhileStmt) int16
 }
 
 type visitorStmtInt32 interface {
@@ -78,6 +84,7 @@ type visitorStmtInt32 interface {
 	visitIfStmt(*IfStmt) int32
 	visitPrintStmt(*PrintStmt) int32
 	visitVarStmt(*VarStmt) int32
+	visitWhileStmt(*WhileStmt) int32
 }
 
 type visitorStmtInt64 interface {
@@ -86,6 +93,7 @@ type visitorStmtInt64 interface {
 	visitIfStmt(*IfStmt) int64
 	visitPrintStmt(*PrintStmt) int64
 	visitVarStmt(*VarStmt) int64
+	visitWhileStmt(*WhileStmt) int64
 }
 
 type visitorStmtUint interface {
@@ -94,6 +102,7 @@ type visitorStmtUint interface {
 	visitIfStmt(*IfStmt) uint
 	visitPrintStmt(*PrintStmt) uint
 	visitVarStmt(*VarStmt) uint
+	visitWhileStmt(*WhileStmt) uint
 }
 
 type visitorStmtUint8 interface {
@@ -102,6 +111,7 @@ type visitorStmtUint8 interface {
 	visitIfStmt(*IfStmt) uint8
 	visitPrintStmt(*PrintStmt) uint8
 	visitVarStmt(*VarStmt) uint8
+	visitWhileStmt(*WhileStmt) uint8
 }
 
 type visitorStmtUint16 interface {
@@ -110,6 +120,7 @@ type visitorStmtUint16 interface {
 	visitIfStmt(*IfStmt) uint16
 	visitPrintStmt(*PrintStmt) uint16
 	visitVarStmt(*VarStmt) uint16
+	visitWhileStmt(*WhileStmt) uint16
 }
 
 type visitorStmtUint32 interface {
@@ -118,6 +129,7 @@ type visitorStmtUint32 interface {
 	visitIfStmt(*IfStmt) uint32
 	visitPrintStmt(*PrintStmt) uint32
 	visitVarStmt(*VarStmt) uint32
+	visitWhileStmt(*WhileStmt) uint32
 }
 
 type visitorStmtUint64 interface {
@@ -126,6 +138,7 @@ type visitorStmtUint64 interface {
 	visitIfStmt(*IfStmt) uint64
 	visitPrintStmt(*PrintStmt) uint64
 	visitVarStmt(*VarStmt) uint64
+	visitWhileStmt(*WhileStmt) uint64
 }
 
 type visitorStmtUintptr interface {
@@ -134,6 +147,7 @@ type visitorStmtUintptr interface {
 	visitIfStmt(*IfStmt) uintptr
 	visitPrintStmt(*PrintStmt) uintptr
 	visitVarStmt(*VarStmt) uintptr
+	visitWhileStmt(*WhileStmt) uintptr
 }
 
 type visitorStmtByte interface {
@@ -142,6 +156,7 @@ type visitorStmtByte interface {
 	visitIfStmt(*IfStmt) byte
 	visitPrintStmt(*PrintStmt) byte
 	visitVarStmt(*VarStmt) byte
+	visitWhileStmt(*WhileStmt) byte
 }
 
 type visitorStmtRune interface {
@@ -150,6 +165,7 @@ type visitorStmtRune interface {
 	visitIfStmt(*IfStmt) rune
 	visitPrintStmt(*PrintStmt) rune
 	visitVarStmt(*VarStmt) rune
+	visitWhileStmt(*WhileStmt) rune
 }
 
 type visitorStmtFloat32 interface {
@@ -158,6 +174,7 @@ type visitorStmtFloat32 interface {
 	visitIfStmt(*IfStmt) float32
 	visitPrintStmt(*PrintStmt) float32
 	visitVarStmt(*VarStmt) float32
+	visitWhileStmt(*WhileStmt) float32
 }
 
 type visitorStmtFloat64 interface {
@@ -166,6 +183,7 @@ type visitorStmtFloat64 interface {
 	visitIfStmt(*IfStmt) float64
 	visitPrintStmt(*PrintStmt) float64
 	visitVarStmt(*VarStmt) float64
+	visitWhileStmt(*WhileStmt) float64
 }
 
 type visitorStmtComplex64 interface {
@@ -174,6 +192,7 @@ type visitorStmtComplex64 interface {
 	visitIfStmt(*IfStmt) complex64
 	visitPrintStmt(*PrintStmt) complex64
 	visitVarStmt(*VarStmt) complex64
+	visitWhileStmt(*WhileStmt) complex64
 }
 
 type visitorStmtComplex128 interface {
@@ -182,6 +201,7 @@ type visitorStmtComplex128 interface {
 	visitIfStmt(*IfStmt) complex128
 	visitPrintStmt(*PrintStmt) complex128
 	visitVarStmt(*VarStmt) complex128
+	visitWhileStmt(*WhileStmt) complex128
 }
 
 type BlockStmt struct {
@@ -653,4 +673,99 @@ func (expr *VarStmt) AcceptComplex64(v visitorStmtComplex64) complex64 {
 
 func (expr *VarStmt) AcceptComplex128(v visitorStmtComplex128) complex128 {
 	return v.visitVarStmt(expr)
+}
+
+type WhileStmt struct {
+	condition Expr
+	body      Stmt
+}
+
+// WhileStmt implements Stmt
+var _ Stmt = &WhileStmt{}
+
+func NewWhileStmt(condition Expr, body Stmt) *WhileStmt {
+	return &WhileStmt{
+		condition: condition,
+		body:      body,
+	}
+}
+
+func (expr *WhileStmt) Accept(v visitorStmt) interface{} {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptBool(v visitorStmtBool) bool {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptString(v visitorStmtString) string {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptInt(v visitorStmtInt) int {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptInt8(v visitorStmtInt8) int8 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptInt16(v visitorStmtInt16) int16 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptInt32(v visitorStmtInt32) int32 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptInt64(v visitorStmtInt64) int64 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptUint(v visitorStmtUint) uint {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptUint8(v visitorStmtUint8) uint8 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptUint16(v visitorStmtUint16) uint16 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptUint32(v visitorStmtUint32) uint32 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptUint64(v visitorStmtUint64) uint64 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptUintptr(v visitorStmtUintptr) uintptr {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptByte(v visitorStmtByte) byte {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptRune(v visitorStmtRune) rune {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptFloat32(v visitorStmtFloat32) float32 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptFloat64(v visitorStmtFloat64) float64 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptComplex64(v visitorStmtComplex64) complex64 {
+	return v.visitWhileStmt(expr)
+}
+
+func (expr *WhileStmt) AcceptComplex128(v visitorStmtComplex128) complex128 {
+	return v.visitWhileStmt(expr)
 }

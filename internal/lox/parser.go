@@ -19,13 +19,17 @@ type parser struct {
 //
 // varDecl     → "var" IDENTIFIER ( "=" expression )? ";" ;
 //
-// statement   → exprStmt | ifStmt | printStmt | block ;
+// statement   → exprStmt | forStmt | ifStmt | printStmt | whileStmt | block ;
 //
 // exprStmt    → expression ";" ;
+//
+// forStmt     → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement ;
 //
 // ifStmt      → "if" "(" expression ")" statement ( "else" statement )? ;
 //
 // printStmt   → "print" expression ";" ;
+//
+// whileStmt   → "while" "(" expression ")" statement ;
 //
 // block       → "{" declaration* "}" ;
 //
@@ -113,11 +117,17 @@ func (p *parser) varDeclaration() (Stmt, *parseError) {
 }
 
 func (p *parser) statement() (Stmt, *parseError) {
+	if p.match(For) {
+		return p.forStatement()
+	}
 	if p.match(If) {
 		return p.ifStatement()
 	}
 	if p.match(Print) {
 		return p.printStatement()
+	}
+	if p.match(While) {
+		return p.whileStatement()
 	}
 	if p.match(LeftBrace) {
 		statements, err := p.block()
@@ -127,6 +137,80 @@ func (p *parser) statement() (Stmt, *parseError) {
 		return NewBlockStmt(statements), nil
 	}
 	return p.expressionStatement()
+}
+
+func (p *parser) forStatement() (Stmt, *parseError) {
+	_, err := p.consume(LeftParen, "Expect '(' after 'for'.")
+	if err != nil {
+		return nil, err
+	}
+
+	var initializer Stmt
+	if p.match(Semicolon) {
+		initializer = nil
+	} else if p.match(Var) {
+		initializer, err = p.varDeclaration()
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		initializer, err = p.expressionStatement()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var condition Expr
+	if !p.check(Semicolon) {
+		cond, err := p.expression()
+		if err != nil {
+			return nil, err
+		}
+		condition = cond
+	}
+	_, err = p.consume(Semicolon, "Expect ';' after loop condition.")
+	if err != nil {
+		return nil, err
+	}
+
+	var increment Expr
+	if !p.check(RightParen) {
+		incr, err := p.expression()
+		if err != nil {
+			return nil, err
+		}
+		increment = incr
+	}
+	_, err = p.consume(RightParen, "Expect ')' after for clauses.")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := p.statement()
+	if err != nil {
+		return nil, err
+	}
+
+	if increment != nil {
+		body = NewBlockStmt([]Stmt{
+			body,
+			NewExpressionStmt(increment),
+		})
+	}
+
+	if condition == nil {
+		condition = NewLiteralExpr(true)
+	}
+	body = NewWhileStmt(condition, body)
+
+	if initializer != nil {
+		body = NewBlockStmt([]Stmt{
+			initializer,
+			body,
+		})
+	}
+
+	return body, nil
 }
 
 func (p *parser) ifStatement() (Stmt, *parseError) {
@@ -168,6 +252,27 @@ func (p *parser) printStatement() (Stmt, *parseError) {
 		return nil, err
 	}
 	return NewPrintStmt(value), nil
+}
+
+func (p *parser) whileStatement() (Stmt, *parseError) {
+	_, err := p.consume(LeftParen, "Expect '(' after 'while'.")
+	if err != nil {
+		return nil, err
+	}
+	condition, err := p.expression()
+	if err != nil {
+		return nil, err
+	}
+	_, err = p.consume(RightParen, "Expect ')' after condition.")
+	if err != nil {
+		return nil, err
+	}
+	body, err := p.statement()
+	if err != nil {
+		return nil, err
+	}
+
+	return NewWhileStmt(condition, body), nil
 }
 
 func (p *parser) expressionStatement() (Stmt, *parseError) {
@@ -386,7 +491,8 @@ func (p *parser) consume(t TokenType, message string) (Token, *parseError) {
 	if p.check(t) {
 		return p.advance(), nil
 	}
-	return Token{}, p.error(p.peek(), message)
+	// TODO peek? previous?
+	return Token{}, p.error(p.previous(), message)
 }
 
 func (p *parser) match(types ...TokenType) bool {
