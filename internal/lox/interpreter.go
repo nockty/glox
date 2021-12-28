@@ -81,7 +81,7 @@ func (i *interpreter) visitPrintStmt(stmt *PrintStmt) interface{} {
 	if ok {
 		return err
 	}
-	fmt.Println(value)
+	fmt.Println(stringify(value))
 	return nil
 }
 
@@ -145,13 +145,13 @@ func (i *interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
 		if err != nil {
 			return err
 		}
-		return castedLeft > castedRight
+		return castedLeft < castedRight
 	case LessEqual:
 		castedLeft, castedRight, err := castNumberOperands(expr.operator, left, right)
 		if err != nil {
 			return err
 		}
-		return castedLeft < castedRight
+		return castedLeft <= castedRight
 	case Slash:
 		castedLeft, castedRight, err := castNumberOperands(expr.operator, left, right)
 		if err != nil {
@@ -261,6 +261,13 @@ func isEqual(a, b interface{}) bool {
 		return false
 	}
 	return a == b
+}
+
+func stringify(value interface{}) string {
+	if value == nil {
+		return "nil"
+	}
+	return fmt.Sprintf("%v", value)
 }
 
 type runtimeError struct {
