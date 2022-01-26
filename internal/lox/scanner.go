@@ -1,6 +1,9 @@
 package lox
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 var keywords = map[string]TokenType{
 	"and":    And,
@@ -24,6 +27,7 @@ var keywords = map[string]TokenType{
 type Scanner struct {
 	source string
 	tokens []Token
+	errors []*scanError
 	// first character in the lexeme being scanned
 	start int
 	// character currently being considered
@@ -47,6 +51,15 @@ func (s *Scanner) ScanTokens() []Token {
 	}
 	s.tokens = append(s.tokens, NewToken(EOF, "", nil, s.line))
 	return s.tokens
+}
+
+func (s *Scanner) HadErrors() bool {
+	hadErrors := false
+	for _, err := range s.errors {
+		println(err.Error())
+		hadErrors = true
+	}
+	return hadErrors
 }
 
 func (s *Scanner) scanToken() {
@@ -118,7 +131,7 @@ func (s *Scanner) scanToken() {
 		} else if isAlpha(c) {
 			s.identifier()
 		} else {
-			// TODO error here
+			s.addError("Unidentified symbol.")
 		}
 	}
 }
@@ -161,7 +174,7 @@ func (s *Scanner) string() {
 		s.advance()
 	}
 	if s.isAtEnd() {
-		// TODO error here
+		s.addError("Unterminated string.")
 		return
 	}
 	// closing "
@@ -185,7 +198,7 @@ func (s *Scanner) number() {
 	}
 	value, err := strconv.ParseFloat(s.source[s.start:s.current], 64)
 	if err != nil {
-		// TODO what to do here? Out of range float
+		s.addError("Out of range number.")
 	}
 	s.addToken(Number, value)
 }
@@ -208,6 +221,14 @@ func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
 	s.tokens = append(s.tokens, NewToken(tokenType, text, literal, s.line))
 }
 
+func (s *Scanner) addError(message string) {
+	text := s.source[s.start:s.current]
+	text = strconv.QuoteToASCII(text)
+	text = text[1 : len(text)-1]
+	where := fmt.Sprintf("at '%s'", text)
+	s.errors = append(s.errors, &scanError{line: s.line, where: where, message: message})
+}
+
 func (s *Scanner) isAtEnd() bool {
 	return s.current >= len(s.source)
 }
@@ -224,4 +245,14 @@ func isAlpha(c byte) bool {
 
 func isAlphaNumeric(c byte) bool {
 	return isDigit(c) || isAlpha(c)
+}
+
+type scanError struct {
+	line    int
+	where   string
+	message string
+}
+
+func (e *scanError) Error() string {
+	return fmt.Sprintf("[line %d] Scan Error %s: %s", e.line, e.where, e.message)
 }

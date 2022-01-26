@@ -48,6 +48,9 @@ func run(source string) {
 	// TODO when running files: exit 65 for static errors, exit 70 for runtime errors
 	scanner := lox.NewScanner(source)
 	tokens := scanner.ScanTokens()
+	if scanner.HadErrors() {
+		return
+	}
 	parser := lox.NewParser(tokens)
 	statements := parser.Parse()
 	if parser.HadErrors() {

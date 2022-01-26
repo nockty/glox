@@ -21,5 +21,4 @@ The `examples` folder contains some sample lox files.
 
 ## TODOs
 
-- fix scanner
 - fix division by zero
