@@ -1,4 +1,4 @@
-# glox
+# glox (WIP)
 
 ## Quick start
 
@@ -19,6 +19,6 @@ go build cmd/glox/glox.go
 
 The `examples` folder contains some sample lox files.
 
-## TODOs
+## Next steps
 
-- fix division by zero
+- https://craftinginterpreters.com/functions.html

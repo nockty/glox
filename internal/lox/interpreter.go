@@ -175,6 +175,9 @@ func (i *interpreter) visitBinaryExpr(expr *BinaryExpr) interface{} {
 		if err != nil {
 			return err
 		}
+		if castedRight == 0 {
+			return &runtimeError{token: expr.operator, message: "Right operand must not be 0."}
+		}
 		return castedLeft / castedRight
 	case Star:
 		castedLeft, castedRight, err := castNumberOperands(expr.operator, left, right)
